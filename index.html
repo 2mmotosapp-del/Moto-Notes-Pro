@@ -996,7 +996,7 @@ tbody tr:last-child td{border-bottom:none}
     </p>
 
     <!-- 3 provider cards -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px">
 
       <!-- GROQ -->
       <div class="ia-provider-card" id="cfg-card-groq">
@@ -1040,86 +1040,7 @@ tbody tr:last-child td{border-bottom:none}
         </div>
       </div>
 
-      <!-- OPENROUTER -->
-      <div class="ia-provider-card" id="cfg-card-or">
-        <div id="cfg-active-badge-or" class="ia-active-badge" style="display:none">● Ativo</div>
-        <div class="ia-prov-hd">
-          <div class="ia-prov-logo" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">OR</div>
-          <div>
-            <div class="ia-prov-name">OpenRouter</div>
-            <div class="ia-prov-desc">Múltiplos modelos<br>LLaMA · Gemma · Mistral</div>
-            <div class="ia-prov-badges">
-              <span class="ia-prov-badge free">Gratuito</span>
-            </div>
-          </div>
-        </div>
-        <div class="fg" style="margin-bottom:0">
-          <label>API Key</label>
-          <div class="ia-key-row" style="margin-top:6px">
-            <input type="password" id="cfg-or-key" placeholder="sk-or-v1-..." oninput="onCfgKeyInput('or',this)"/>
-            <button class="ia-test-btn" onclick="testarProvedor('or')" id="cfg-test-or">
-              <span class="ms material-symbols-outlined">wifi</span>Testar
-            </button>
-          </div>
-        </div>
-        <div class="fg" style="margin-top:10px">
-          <label>Modelo</label>
-          <select class="ia-model-select" id="cfg-or-model">
-            <option value="meta-llama/llama-3.1-8b-instruct:free">LLaMA 3.1 8B (grátis)</option>
-            <option value="meta-llama/llama-3.2-3b-instruct:free">LLaMA 3.2 3B (grátis)</option>
-            <option value="google/gemma-2-9b-it:free">Gemma 2 9B (grátis)</option>
-            <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (grátis)</option>
-            <option value="microsoft/phi-3-mini-128k-instruct:free">Phi-3 Mini (grátis)</option>
-          </select>
-        </div>
-        <div id="cfg-status-or"></div>
-        <div class="ia-select-row">
-          <label class="ia-radio-label">
-            <input type="radio" name="ia-provider-select" value="or" onchange="selecionarProvedor('or')"/>
-            Usar como padrão
-          </label>
-          <a href="https://openrouter.ai" target="_blank" style="font-size:.72rem;color:var(--primary);text-decoration:none;font-weight:600">Criar conta →</a>
-        </div>
-      </div>
 
-      <!-- ANTHROPIC -->
-      <div class="ia-provider-card" id="cfg-card-ant">
-        <div id="cfg-active-badge-ant" class="ia-active-badge" style="display:none">● Ativo</div>
-        <div class="ia-prov-hd">
-          <div class="ia-prov-logo" style="background:linear-gradient(135deg,#d4a853,#f59e0b)">ANT</div>
-          <div>
-            <div class="ia-prov-name">Anthropic Claude</div>
-            <div class="ia-prov-desc">Claude Haiku/Sonnet<br>Melhor qualidade</div>
-            <div class="ia-prov-badges">
-              <span class="ia-prov-badge paid">Requer saldo</span>
-            </div>
-          </div>
-        </div>
-        <div class="fg" style="margin-bottom:0">
-          <label>API Key</label>
-          <div class="ia-key-row" style="margin-top:6px">
-            <input type="password" id="cfg-ant-key" placeholder="sk-ant-api03-..." oninput="onCfgKeyInput('ant',this)"/>
-            <button class="ia-test-btn" onclick="testarProvedor('ant')" id="cfg-test-ant">
-              <span class="ms material-symbols-outlined">wifi</span>Testar
-            </button>
-          </div>
-        </div>
-        <div class="fg" style="margin-top:10px">
-          <label>Modelo</label>
-          <select class="ia-model-select" id="cfg-ant-model">
-            <option value="claude-haiku-4-5-20251001">Claude Haiku (rápido/econômico)</option>
-            <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (melhor)</option>
-          </select>
-        </div>
-        <div id="cfg-status-ant"></div>
-        <div class="ia-select-row">
-          <label class="ia-radio-label">
-            <input type="radio" name="ia-provider-select" value="ant" onchange="selecionarProvedor('ant')"/>
-            Usar como padrão
-          </label>
-          <a href="https://console.anthropic.com" target="_blank" style="font-size:.72rem;color:var(--primary);text-decoration:none;font-weight:600">Console →</a>
-        </div>
-      </div>
     </div>
 
     <!-- Save bar -->
@@ -2725,7 +2646,7 @@ async function chamarIA(userMsg){
   const msgs   = _iaChatHistory.map(m=>({role:m.role, content:m.content}));
   const sys    = buildIASystemPrompt();
   const active = getActiveProvider();
-  const key    = {groq:getGroqKey(), or:getOrKey(), ant:getIaApiKey()}[active] || '';
+  const key    = {groq:getGroqKey()}[active] || '';
 
   if(!key) return getSemKeyMsg();
 
@@ -2743,27 +2664,8 @@ async function chamarIA(userMsg){
       return '⚠️ Groq: '+(d.error?.message||'Resposta inválida');
     }
 
-    if(active === 'or'){
-      const r = await fetch('https://openrouter.ai/api/v1/chat/completions',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://motonotes.local','X-Title':'MotoNotes Pro'},
-        body:JSON.stringify({model, max_tokens:1024, messages:[{role:'system',content:sys},...msgs]})
-      });
-      const d = await r.json();
-      if(d.choices?.[0]?.message?.content) return d.choices[0].message.content;
-      return '⚠️ OpenRouter: '+(d.error?.message||'Resposta inválida');
-    }
 
-    if(active === 'ant'){
-      const r = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body:JSON.stringify({model, max_tokens:1024, system:sys, messages:msgs})
-      });
-      const d = await r.json();
-      if(d.content?.[0]?.text) return d.content[0].text;
-      return '⚠️ Anthropic: '+(d.error?.message||'Resposta inválida');
-    }
+
   } catch(e){
     return '⚠️ Erro de conexão com '+active+': '+e.message;
   }
@@ -2772,7 +2674,7 @@ async function chamarIA(userMsg){
 }
 
 function getSemKeyMsg(){
-  const temAlguma = localStorage.getItem('groq_api_key')||localStorage.getItem('or_api_key')||localStorage.getItem('ia_api_key');
+  const temAlguma = localStorage.getItem('groq_api_key');
   if(temAlguma){
     return '⚠️ Todas as APIs retornaram erro. Verifique se as keys são válidas e se há saldo/cota disponível. Clique em ⚙️ Configurar para verificar.';
   }
@@ -2780,17 +2682,10 @@ function getSemKeyMsg(){
 }
 
 
-function getIaApiKey(){
-  return localStorage.getItem('ia_api_key') || '';
-}
 
-function getIaApiKey(){ return localStorage.getItem('ia_api_key')||''; }
-function saveIaApiKey(key){ if(key) localStorage.setItem('ia_api_key',key.trim()); else localStorage.removeItem('ia_api_key'); }
 function getGroqKey(){ return localStorage.getItem('groq_api_key')||''; }
 function saveGroqKey(key){ if(key) localStorage.setItem('groq_api_key',key.trim()); else localStorage.removeItem('groq_api_key'); }
-function getOrKey(){ return localStorage.getItem('or_api_key')||''; }
-function saveOrKey(key){ if(key) localStorage.setItem('or_api_key',key.trim()); else localStorage.removeItem('or_api_key'); }
-function hasAnyKey(){ return !!(getGroqKey()||getOrKey()||getIaApiKey()); }
+function hasAnyKey(){ return !!getGroqKey(); }
 
 
 function showIAKeyPrompt(errorMsg){
@@ -2800,8 +2695,6 @@ function showIAKeyPrompt(errorMsg){
   if(existing) existing.remove();
 
   const groqKey = getGroqKey();
-  const orKey   = getOrKey();
-  const antKey  = getIaApiKey();
 
   const div = document.createElement('div');
   div.id = 'ia-key-prompt';
@@ -2839,35 +2732,7 @@ function showIAKeyPrompt(errorMsg){
       '</div>' +
     '</div>' +
 
-    // ── OpenRouter ──
-    '<div style="background:var(--bg);border-radius:var(--r);padding:14px;margin-bottom:10px;border:1.5px solid ' + (orKey ? 'var(--success)' : 'var(--border)') + '">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
-        '<div>' +
-          '<div style="font-weight:800;font-size:.84rem;display:flex;align-items:center;gap:6px">' +
-            '<span style="background:#6366f1;color:#fff;font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px">OR</span>' +
-            'OpenRouter' +
-            '<span style="background:var(--success-s);color:var(--success);font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:4px">✓ GRATUITO</span>' +
-          '</div>' +
-          '<div style="font-size:.72rem;color:var(--muted);margin-top:2px">LLaMA 3.1 · openrouter.ai · sem cartão</div>' +
-        '</div>' +
-        (orKey ? '<span style="color:var(--success);font-size:.78rem;font-weight:700">✓ Configurado</span>' : '') +
-      '</div>' +
-      '<div style="display:flex;gap:8px">' +
-        '<input id="ia-or-input" type="password" placeholder="sk-or-v1-..." value="' + orKey + '" ' +
-          'style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:\'Sora\',sans-serif;font-size:.82rem;outline:none;background:#fff"/>' +
-        '<button onclick="salvarProvedor(\'or\')" style="padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:var(--r);font-family:\'Sora\',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap">Salvar</button>' +
-      '</div>' +
-    '</div>' +
-
-    // ── Anthropic ──
-    '<div style="background:var(--bg);border-radius:var(--r);padding:14px;margin-bottom:14px;border:1.5px solid ' + (antKey ? 'var(--success)' : 'var(--border)') + '">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
-        '<div>' +
-          '<div style="font-weight:800;font-size:.84rem;display:flex;align-items:center;gap:6px">' +
-            '<span style="background:#d4a853;color:#fff;font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px">ANT</span>' +
-            'Anthropic Claude' +
-          '</div>' +
-          '<div style="font-size:.72rem;color:var(--muted);margin-top:2px">Claude Haiku · console.anthropic.com · requer saldo</div>' +
+    '<div style="font-size:.72rem;color:var(--muted);margin-top:2px">Claude Haiku · console.anthropic.com · requer saldo</div>' +
         '</div>' +
         (antKey ? '<span style="color:var(--success);font-size:.78rem;font-weight:700">✓ Configurado</span>' : '') +
       '</div>' +
@@ -2895,8 +2760,8 @@ function salvarProvedor(tipo){
   const inp = document.getElementById(inputId);
   const key = (inp ? inp.value : '').trim();
   if(tipo==='groq') saveGroqKey(key);
-  else if(tipo==='or') saveOrKey(key);
-  else if(tipo==='ant') saveIaApiKey(key);
+
+
   updateIaKeyStatus();
   showToast('Salvo!', tipo.toUpperCase() + ' configurado com sucesso', 'success');
   // Re-render to show green border
@@ -3013,13 +2878,9 @@ function updateIaKeyStatus(){
   const txt = document.getElementById('ia-key-status-text');
   if(!btn || !txt) return;
   const groqOk = !!getGroqKey();
-  const orOk   = !!getOrKey();
-  const antOk  = !!getIaApiKey();
-  const any = groqOk || orOk || antOk;
+  const any = groqOk;
   const labels = [];
   if(groqOk) labels.push('Groq');
-  if(orOk)   labels.push('OR');
-  if(antOk)  labels.push('Claude');
   if(any){
     txt.textContent = labels.join('+') + ' ✓';
     btn.style.background = 'rgba(16,185,129,.3)';
@@ -3405,14 +3266,12 @@ function renderGestao(){
 // ==================== CONFIGURAÇÕES IA ====================
 const IA_PROVIDERS = {
   groq: { name:'Groq Cloud', keyPfx:'gsk_',    lsKey:'groq_api_key',  lsModel:'groq_model',  lsActive:'ia_active_provider' },
-  or:   { name:'OpenRouter', keyPfx:'sk-or-',  lsKey:'or_api_key',    lsModel:'or_model',    lsActive:'ia_active_provider' },
-  ant:  { name:'Anthropic',  keyPfx:'sk-ant-', lsKey:'ia_api_key',    lsModel:'ant_model',   lsActive:'ia_active_provider' },
 };
 
-function getActiveProvider(){ return localStorage.getItem('ia_active_provider')||'groq'; }
-function setActiveProvider(p){ localStorage.setItem('ia_active_provider', p); }
+function getActiveProvider(){ return 'groq'; }
+function setActiveProvider(p){ localStorage.setItem('ia_active_provider', 'groq'); }
 function getProviderModel(p){
-  const defaults = {groq:'llama-3.1-8b-instant', or:'meta-llama/llama-3.1-8b-instruct:free', ant:'claude-haiku-4-5-20251001'};
+  const defaults = {groq:'llama-3.1-8b-instant'};
   return localStorage.getItem(p+'_model') || defaults[p];
 }
 function setProviderModel(p, m){ localStorage.setItem(p+'_model', m); }
@@ -3428,17 +3287,15 @@ async function loadCfgIA(){
   // Now fill form from localStorage (which was just updated from Baserow)
   const active = getActiveProvider();
   const groqK = getGroqKey();
-  const orK   = getOrKey();
-  const antK  = getIaApiKey();
 
-  const inputs = {groq:'cfg-groq-key', or:'cfg-or-key', ant:'cfg-ant-key'};
-  const keys   = {groq:groqK, or:orK, ant:antK};
+  const inputs = {groq:'cfg-groq-key'};
+  const keys   = {groq:groqK};
   Object.entries(inputs).forEach(([p, id])=>{
     const el = document.getElementById(id);
     if(el){ el.value = keys[p]; el.classList.toggle('has-value', !!keys[p]); }
   });
 
-  const modelSels = {groq:'cfg-groq-model', or:'cfg-or-model', ant:'cfg-ant-model'};
+  const modelSels = {groq:'cfg-groq-model'};
   Object.entries(modelSels).forEach(([p, id])=>{
     const el = document.getElementById(id);
     const model = getProviderModel(p);
@@ -3466,7 +3323,7 @@ function onCfgKeyInput(provider, input){
 
 function updateCfgCards(){
   const active = getActiveProvider();
-  const keys = {groq:getGroqKey(), or:getOrKey(), ant:getIaApiKey()};
+  const keys = {groq:getGroqKey()};
   ['groq','or','ant'].forEach(p=>{
     const card  = document.getElementById('cfg-card-'+p);
     const badge = document.getElementById('cfg-active-badge-'+p);
@@ -3482,8 +3339,8 @@ function updateCfgActiveInfo(){
   const el = document.getElementById('cfg-ia-active-info');
   if(!el) return;
   const active = getActiveProvider();
-  const keys = {groq:getGroqKey(), or:getOrKey(), ant:getIaApiKey()};
-  const names = {groq:'Groq', or:'OpenRouter', ant:'Anthropic'};
+  const keys = {groq:getGroqKey()};
+  const names = {groq:'Groq'};
   const hasKey = !!keys[active];
   el.innerHTML = hasKey
     ? '<span style="color:var(--success);display:flex;align-items:center;gap:4px"><span class="ms material-symbols-outlined" style="font-size:16px">check_circle</span>Ativo: <strong>'+names[active]+'</strong> &nbsp;·&nbsp; '+getProviderModel(active)+'</span>'
@@ -3499,7 +3356,7 @@ function selecionarProvedor(p){
 }
 
 async function testarProvedor(provider){
-  const keyInputId = {groq:'cfg-groq-key', or:'cfg-or-key', ant:'cfg-ant-key'}[provider];
+  const keyInputId = 'cfg-groq-key';
   const key = (document.getElementById(keyInputId)||{}).value?.trim() || '';
   if(!key){
     setCfgStatus(provider, 'error', 'Insira a API Key antes de testar');
@@ -3524,28 +3381,6 @@ async function testarProvedor(provider){
       });
       const d = await r.json();
       ok = !!d.choices?.[0]?.message?.content;
-      errMsg = d.error?.message || 'Resposta inválida';
-    } else if(provider === 'or'){
-      const modelEl = document.getElementById('cfg-or-model');
-      const model = modelEl ? modelEl.value : 'meta-llama/llama-3.1-8b-instruct:free';
-      const r = await fetch('https://openrouter.ai/api/v1/chat/completions',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':'https://motonotes.local','X-Title':'MotoNotes Pro'},
-        body:JSON.stringify({model, max_tokens:10, messages:[{role:'system',content:sys},...testMsg]})
-      });
-      const d = await r.json();
-      ok = !!d.choices?.[0]?.message?.content;
-      errMsg = d.error?.message || 'Resposta inválida';
-    } else if(provider === 'ant'){
-      const modelEl = document.getElementById('cfg-ant-model');
-      const model = modelEl ? modelEl.value : 'claude-haiku-4-5-20251001';
-      const r = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-        body:JSON.stringify({model, max_tokens:10, system:sys, messages:testMsg})
-      });
-      const d = await r.json();
-      ok = !!d.content?.[0]?.text;
       errMsg = d.error?.message || 'Resposta inválida';
     }
 
@@ -3578,30 +3413,22 @@ async function salvarCfgIA(){
 
   // 1. Read values from form
   const groqKey   = (document.getElementById('cfg-groq-key')||{}).value?.trim()||'';
-  const orKey     = (document.getElementById('cfg-or-key')||{}).value?.trim()||'';
-  const antKey    = (document.getElementById('cfg-ant-key')||{}).value?.trim()||'';
+
   const groqModel = (document.getElementById('cfg-groq-model')||{}).value||'';
-  const orModel   = (document.getElementById('cfg-or-model')||{}).value||'';
-  const antModel  = (document.getElementById('cfg-ant-model')||{}).value||'';
+
   const active    = getActiveProvider();
 
   // 2. Save to localStorage (immediate, always)
   saveGroqKey(groqKey);
-  saveOrKey(orKey);
-  saveIaApiKey(antKey);
+
   if(groqModel) setProviderModel('groq', groqModel);
-  if(orModel)   setProviderModel('or',   orModel);
-  if(antModel)  setProviderModel('ant',  antModel);
+
 
   // 3. Save to Baserow (persistent, server-side)
   const cfgMap = {
     ia_active_provider: active,
     groq_api_key:       groqKey,
-    or_api_key:         orKey,
-    ia_api_key:         antKey,
     groq_model:         groqModel,
-    or_model:           orModel,
-    ant_model:          antModel,
   };
   const saved = await salvarConfigsBaserow(cfgMap);
 
@@ -3668,11 +3495,7 @@ async function carregarConfigsBaserow(){
     // Restore to localStorage
     if(map.ia_active_provider) setActiveProvider(map.ia_active_provider);
     if(map.groq_api_key)       saveGroqKey(map.groq_api_key);
-    if(map.or_api_key)         saveOrKey(map.or_api_key);
-    if(map.ia_api_key)         saveIaApiKey(map.ia_api_key);
     if(map.groq_model)         setProviderModel('groq', map.groq_model);
-    if(map.or_model)           setProviderModel('or',   map.or_model);
-    if(map.ant_model)          setProviderModel('ant',  map.ant_model);
 
     console.log('Configs IA carregadas do Baserow:', Object.keys(map).length, 'itens');
     return true;
@@ -3684,18 +3507,18 @@ async function carregarConfigsBaserow(){
 
 async function limparTodasKeys(){
   if(!confirm('Remover todas as API Keys salvas localmente e no servidor?')) return;
-  ['groq_api_key','or_api_key','ia_api_key','groq_model','or_model','ant_model','ia_active_provider'].forEach(k=>localStorage.removeItem(k));
+  ['groq_api_key','groq_model','ia_active_provider'].forEach(k=>localStorage.removeItem(k));
   // Also delete from Baserow
   try{
     const cfg = getConfig();
     const login = state.currentUser?.login||'';
     const rows = await brGet(cfg.tableConfiguracoes);
-    const iaKeys = ['ia_active_provider','groq_api_key','or_api_key','ia_api_key','groq_model','or_model','ant_model'];
+    const iaKeys = ['ia_active_provider','groq_api_key','groq_model'];
     const toDelete = rows.filter(r=>r.usuario_login===login && iaKeys.includes(r.chave_config));
     await Promise.all(toDelete.map(r=>brDelete(cfg.tableConfiguracoes, r.id)));
     console.log('Deleted', toDelete.length, 'config rows from Baserow');
   }catch(e){ console.warn('limpar Baserow error:', e.message); }
-  ['cfg-groq-key','cfg-or-key','cfg-ant-key'].forEach(id=>{
+  ['cfg-groq-key'].forEach(id=>{
     const el = document.getElementById(id);
     if(el){ el.value=''; el.classList.remove('has-value'); }
   });

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MotoNotes Pro — Gestão de Clientes</title>
+<title>MotoNotes Pro — Gestão de Atendimentos</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
 <style>
@@ -169,6 +169,7 @@ tbody tr:last-child td{border-bottom:none}
 .badge-purple,.badge-medio{background:var(--purple-s);color:var(--purple)}
 .badge-gray,.badge-operador{background:#f1f5f9;color:#64748b}
 .badge-administrador{background:var(--primary-s);color:var(--primary)}
+.badge-gerente{background:var(--purple-s);color:var(--purple)}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s;border:none;text-decoration:none;user-select:none;white-space:nowrap}
@@ -444,6 +445,32 @@ tbody tr:last-child td{border-bottom:none}
 /* Resumo de tentativas no card agendamento */
 .agenda-row-extra{font-size:.74rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:6px}
 
+
+/* ── GESTÃO DA EQUIPE ── */
+.user-rank-card{background:var(--bg);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border:1px solid var(--border);transition:.2s}
+.user-rank-card:hover{box-shadow:var(--sh);border-color:var(--primary)}
+.user-rank-hd{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.user-rank-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0}
+.user-rank-name{font-weight:700;font-size:.88rem}
+.user-rank-role{font-size:.72rem;color:var(--muted)}
+.user-rank-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.urs{text-align:center;padding:6px;border-radius:8px}
+.urs-num{font-size:1.1rem;font-weight:800;line-height:1}
+.urs-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+.urs.pendente{background:var(--orange-s)}
+.urs.andamento{background:var(--warning-s)}
+.urs.concluido{background:var(--success-s)}
+.urs.total{background:var(--primary-s)}
+.urs.pendente .urs-num{color:var(--orange)}
+.urs.andamento .urs-num{color:var(--warning)}
+.urs.concluido .urs-num{color:var(--success)}
+.urs.total .urs-num{color:var(--primary)}
+.status-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.status-bar-label{font-size:.8rem;font-weight:600;color:var(--text);width:110px;flex-shrink:0}
+.status-bar-track{flex:1;height:12px;background:var(--border);border-radius:6px;overflow:hidden}
+.status-bar-fill{height:100%;border-radius:6px;transition:width .6s}
+.status-bar-count{font-size:.78rem;font-weight:700;width:32px;text-align:right;flex-shrink:0}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .sidebar{width:72px}
@@ -465,7 +492,7 @@ tbody tr:last-child td{border-bottom:none}
     <div class="login-logo">
       <img src="https://i.ibb.co/hxqpRjKg/logo1.png" alt="Logo" onerror="this.style.display='none'"/>
       <div class="login-brand">Moto<em>Notes</em> Pro</div>
-      <div class="login-sub">Gestão de Clientes</div>
+      <div class="login-sub">Gestão de Atendimentos</div>
     </div>
     <div class="login-form">
       <div class="lg-fg"><label>Login</label><input id="login-user" placeholder="seu login" autocomplete="username"/></div>
@@ -486,7 +513,7 @@ tbody tr:last-child td{border-bottom:none}
     <img src="https://i.ibb.co/hxqpRjKg/logo1.png" class="logo-img" alt="Logo" style="background:#0d1f4e;padding:4px"/>
     <div class="logo-text">
       <span class="logo-brand">Moto<em>Notes</em> Pro</span>
-      <span class="logo-sub">Gestão de Clientes</span>
+      <span class="logo-sub">Gestão de Atendimentos</span>
     </div>
   </div>
   <div class="user-area">
@@ -501,6 +528,8 @@ tbody tr:last-child td{border-bottom:none}
     <button class="nav-link" onclick="navigate('agendamentos',this)"><span class="ms material-symbols-outlined">calendar_month</span><span class="nav-label">Agendamentos</span></button>
     <button class="nav-link" onclick="navigate('tarefas',this)"><span class="ms material-symbols-outlined">task_alt</span><span class="nav-label">Tarefas</span></button>
     <button class="nav-link" onclick="navigate('contatos',this)"><span class="ms material-symbols-outlined">contact_phone</span><span class="nav-label">Histórico Contatos</span></button>
+    <div class="nav-section mgmt-only">Gestão</div>
+    <button class="nav-link mgmt-only" onclick="navigate('gestao',this)"><span class="ms material-symbols-outlined">supervisor_account</span><span class="nav-label">Painel da Equipe</span></button>
     <div class="nav-section admin-only">Sistema</div>
     <button class="nav-link admin-only" onclick="navigate('usuarios',this)"><span class="ms material-symbols-outlined">manage_accounts</span><span class="nav-label">Usuários</span></button>
     <button class="nav-link admin-only" onclick="navigate('configuracoes',this)"><span class="ms material-symbols-outlined">settings</span><span class="nav-label">Configurações</span></button>
@@ -755,6 +784,58 @@ tbody tr:last-child td{border-bottom:none}
   </div>
 </div>
 
+
+<!-- ══════ GESTÃO DA EQUIPE ══════ -->
+<div class="page mgmt-only" id="page-gestao">
+  <div class="sec-hd">
+    <div class="sec-title"><span class="ms material-symbols-outlined">supervisor_account</span>Painel da Equipe</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <select id="gestao-filter-usuario" onchange="renderGestao()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 12px;font-family:'Sora',sans-serif;font-size:.82rem;outline:none">
+        <option value="">Todos os usuários</option>
+      </select>
+      <select id="gestao-filter-periodo" onchange="renderGestao()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 12px;font-family:'Sora',sans-serif;font-size:.82rem;outline:none">
+        <option value="">Todo período</option>
+        <option value="hoje">Hoje</option>
+        <option value="semana">Esta semana</option>
+        <option value="mes">Este mês</option>
+      </select>
+      <button class="btn btn-orange btn-sm" onclick="renderGestao()"><span class="ms material-symbols-outlined">refresh</span>Atualizar</button>
+    </div>
+  </div>
+
+  <!-- KPIs globais -->
+  <div class="kpi-grid" id="gestao-kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:20px"></div>
+
+  <!-- Ranking de usuários -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+    <div class="card">
+      <div class="sec-hd" style="margin-bottom:14px">
+        <div class="sec-title"><span class="ms material-symbols-outlined">leaderboard</span>Desempenho por Usuário</div>
+      </div>
+      <div id="gestao-ranking"></div>
+    </div>
+    <div class="card">
+      <div class="sec-hd" style="margin-bottom:14px">
+        <div class="sec-title"><span class="ms material-symbols-outlined">bar_chart</span>Agendamentos por Status</div>
+      </div>
+      <div id="gestao-status-chart" style="padding:8px 0"></div>
+    </div>
+  </div>
+
+  <!-- Tabela de agendamentos detalhada -->
+  <div class="card" style="padding:0">
+    <div class="sec-hd" style="padding:16px 20px;margin-bottom:0;border-bottom:1px solid var(--border)">
+      <div class="sec-title"><span class="ms material-symbols-outlined">calendar_month</span>Todos os Agendamentos da Equipe</div>
+    </div>
+    <div class="table-wrap" style="border:none;border-radius:0">
+      <table>
+        <thead><tr><th>Usuário</th><th>Cliente</th><th>Tipo</th><th>Agendado para</th><th>Tentativas</th><th>Checklist</th><th>Status</th><th>Ação</th></tr></thead>
+        <tbody id="gestao-agenda-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- ══════ USUÁRIOS ══════ -->
 <div class="page admin-only" id="page-usuarios">
   <div class="sec-hd">
@@ -971,7 +1052,7 @@ tbody tr:last-child td{border-bottom:none}
         <div class="fg" style="margin-bottom:12px"><label>Login *</label><input id="u-login" placeholder="Login único"/></div>
         <div class="fg" style="margin-bottom:12px"><label>Senha *</label><input id="u-senha" type="password" placeholder="Senha de acesso"/></div>
         <div class="fg"><label>Nível de Acesso</label>
-          <select id="u-nivel"><option value="operador">Operador</option><option value="administrador">Administrador</option></select>
+          <select id="u-nivel"><option value="operador">Operador</option><option value="gerente">Gerente</option><option value="administrador">Administrador</option></select>
         </div>
       </div>
     </div>
@@ -1087,17 +1168,25 @@ async function doLogin(){
   btn.textContent='Entrar no Sistema';btn.disabled=false;
 }
 
+function isAdmin(){return state.currentUser?.nivel==='administrador';}
+function isGerente(){return state.currentUser?.nivel==='gerente'||isAdmin();}
+
 function iniciarApp(){
   const u=state.currentUser;
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('sb-avatar').textContent=u.nome.charAt(0).toUpperCase();
   document.getElementById('sb-name').textContent=u.nome;
-  document.getElementById('sb-role').textContent=u.nivel==='administrador'?'Administrador':'Operador';
+  const nivelLabels={'administrador':'Administrador','gerente':'Gerente','operador':'Operador'};
+  document.getElementById('sb-role').textContent=nivelLabels[u.nivel]||u.nivel;
   document.getElementById('chip-av').textContent=u.nome.charAt(0).toUpperCase();
   document.getElementById('chip-name').textContent=u.nome;
-  document.getElementById('chip-badge').textContent=u.nivel==='administrador'?'Admin':'Operador';
-  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=u.nivel==='administrador'?'':'none');
+  const chipLabels={'administrador':'Admin','gerente':'Gerente','operador':'Operador'};
+  document.getElementById('chip-badge').textContent=chipLabels[u.nivel]||u.nivel;
+  // admin-only: apenas administrador
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display=isAdmin()?'':'none');
+  // mgmt-only: gerente e administrador
+  document.querySelectorAll('.mgmt-only').forEach(el=>el.style.display=isGerente()?'':'none');
   loadConfiguracoes();
   carregarDadosBaserow();
   startClock();
@@ -1107,11 +1196,12 @@ function iniciarApp(){
 async function carregarDadosBaserow(){
   const cfg=getConfig();
   const isAdmin=state.currentUser?.nivel==='administrador';
+  const isGer=state.currentUser?.nivel==='gerente'||isAdmin;
   const meuLogin=state.currentUser?.login;
   showToast('Sincronizando','Carregando dados do Baserow...','info');
   try{
     const clRows=await brGet(cfg.tableClientes);
-    DB.set('clientes',clRows.filter(r=>isAdmin||r.usuario_responsavel===meuLogin).map(r=>({
+    DB.set('clientes',clRows.filter(r=>isAdmin||isGer||r.usuario_responsavel===meuLogin).map(r=>({
       id:String(r.id),rowId:r.id,nome:r.nome_completo,tel1:r.telefone_1,tel2:r.telefone_2,
       wapp:r.whatsapp,placa:r.placa_moto,marca:r.marca_moto,modelo:r.modelo_moto,
       tipo:r.tipo_cliente,status:r.status_cliente,usuario:r.usuario_responsavel,dataCadastro:r.data_cadastro
@@ -1119,20 +1209,20 @@ async function carregarDadosBaserow(){
     const cvRows=await brGet(cfg.tableConversas);
     DB.set('conversas',cvRows.map(r=>({id:String(r.id),rowId:r.id,cliente_ref:r.cliente_ref,descricao:r.descricao,data_hora:r.data_hora,arquivo_nome:r.arquivo_nome,usuario_login:r.usuario_login})));
     const agRows=await brGet(cfg.tableAgenda);
-    DB.set('agendamentos',agRows.filter(r=>isAdmin||r.usuario_login===meuLogin).map(r=>({
+    DB.set('agendamentos',agRows.filter(r=>(isAdmin||r.usuario_login===meuLogin)||(state.currentUser?.nivel==='gerente')).map(r=>({
       id:String(r.id),rowId:r.id,cliente_ref:r.cliente_ref,cliente_nome:r.cliente_nome,
       data_hora_agendamento:r.data_hora_agendamento,status:r.status_agendamento,
       usuario_login:r.usuario_login,alertado:false
     })));
     const tfRows=await brGet(cfg.tableTarefas);
-    DB.set('tarefas',tfRows.filter(r=>isAdmin||r.usuario_login===meuLogin).map(r=>({
+    DB.set('tarefas',tfRows.filter(r=>isAdmin||isGer||r.usuario_login===meuLogin).map(r=>({
       id:String(r.id),rowId:r.id,titulo:r.titulo_tarefa,descricao:r.descricao_tarefa,
       prioridade:r.prioridade_tarefa,status:r.status_tarefa,
       vencimento:r.data_vencimento,cliente_ref:r.cliente_ref||'',
       usuario_login:r.usuario_login,checklist:r.checklist||'[]'
     })));
     const ctRows=await brGet(cfg.tableContatos);
-    DB.set('contatos',ctRows.filter(r=>isAdmin||r.usuario_login===meuLogin).map(r=>({
+    DB.set('contatos',ctRows.filter(r=>isAdmin||isGer||r.usuario_login===meuLogin).map(r=>({
       id:String(r.id),rowId:r.id,cliente_ref:r.cliente_ref,
       nome:r.nome_contato,obs:r.observacoes_contato,
       data_hora:r.data_hora_contato,usuario_login:r.usuario_login
@@ -1142,6 +1232,7 @@ async function carregarDadosBaserow(){
     if(state.activeSection==='agendamentos')renderAgendamentos();
     if(state.activeSection==='tarefas')renderTarefas();
     if(state.activeSection==='contatos')renderContatos();
+    if(state.activeSection==='gestao')renderGestao();
     showToast('Sincronizado','Dados carregados com sucesso!','success');
   }catch(e){
     showToast('Aviso','Usando dados locais. Erro: '+e.message,'warning');
@@ -1166,6 +1257,7 @@ const pageTitles={
   agendamentos:['Agendamentos','Controle de agendamentos'],
   tarefas:['Tarefas','Gestão de tarefas'],
   contatos:['Histórico de Contatos','Registro de conversas por cliente'],
+  gestao:['Painel da Equipe','Totalizadores e gestão de atendimentos'],
   usuarios:['Usuários','Gestão de usuários do sistema'],
   configuracoes:['Configurações','Parâmetros do sistema']
 };
@@ -1185,6 +1277,7 @@ function navigate(sec,btn){
   if(sec==='tarefas')renderTarefas();
   if(sec==='contatos'){renderContatos();}
   if(sec==='usuarios')renderUsuarios();
+  if(sec==='gestao')renderGestao();
   if(sec==='dashboard')updateDashboard();
   if(sec==='configuracoes')loadConfiguracoes();
 }
@@ -2297,15 +2390,227 @@ function renderUsuarios(){
   const usuarios=DB.get('usuarios')||[];
   const tbody=document.getElementById('usuarios-tbody');
   if(!usuarios.length){tbody.innerHTML=`<tr><td colspan="4"><div class="empty-state"><span class="ms material-symbols-outlined">manage_accounts</span><p>Nenhum usuário</p></div></td></tr>`;return;}
+  const nivelLabel={administrador:'Administrador',gerente:'Gerente',operador:'Operador'};
   tbody.innerHTML=usuarios.map(u=>`<tr>
     <td><strong>${u.nome}</strong></td>
     <td><code style="background:var(--bg);padding:2px 8px;border-radius:6px;font-size:.8rem">${u.login}</code></td>
-    <td><span class="badge badge-${u.nivel}">${u.nivel==='administrador'?'Administrador':'Operador'}</span></td>
+    <td><span class="badge badge-${u.nivel||'operador'}">${nivelLabel[u.nivel]||u.nivel}</span></td>
     <td><div class="row-actions">
       <button class="btn btn-outline btn-sm btn-icon" onclick="openModalUsuario('${u.id}')"><span class="ms material-symbols-outlined">edit</span></button>
       <button class="btn btn-danger btn-sm btn-icon" onclick="deleteUsuario('${u.id}')"><span class="ms material-symbols-outlined">delete</span></button>
     </div></td>
   </tr>`).join('');
+}
+
+// ==================== GESTÃO DA EQUIPE ====================
+function getGestaoData(filterUsuario, filterPeriodo){
+  const ags = DB.get('agendamentos') || [];
+  const clientes = DB.get('clientes') || [];
+  const usuarios = DB.get('usuarios') || [];
+  const now = new Date();
+
+  // Period boundaries
+  let dateFrom = null;
+  if(filterPeriodo === 'hoje'){
+    dateFrom = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  } else if(filterPeriodo === 'semana'){
+    const day = now.getDay();
+    dateFrom = new Date(now); dateFrom.setDate(now.getDate() - day);
+    dateFrom.setHours(0,0,0,0);
+  } else if(filterPeriodo === 'mes'){
+    dateFrom = new Date(now.getFullYear(), now.getMonth(), 1);
+  }
+
+  // Filter agendamentos
+  let filtered = ags.filter(a => {
+    if(filterUsuario && a.usuario_login !== filterUsuario) return false;
+    if(dateFrom){
+      const dt = parseDtAgenda(a.data_hora_agendamento);
+      if(dt && dt < dateFrom) return false;
+    }
+    return true;
+  });
+
+  // Per-user stats
+  const userMap = {};
+  filtered.forEach(a => {
+    const u = a.usuario_login || '(sem usuário)';
+    if(!userMap[u]) userMap[u] = {login:u, total:0, pendente:0, andamento:0, concluido:0, atrasado:0, tentativas:0};
+    userMap[u].total++;
+    const s = (a.status||'Pendente').toLowerCase();
+    if(s === 'concluido') userMap[u].concluido++;
+    else if(s === 'em andamento') userMap[u].andamento++;
+    else userMap[u].pendente++;
+    const dt = parseDtAgenda(a.data_hora_agendamento);
+    if(dt && dt < now && s !== 'concluido') userMap[u].atrasado++;
+    userMap[u].tentativas += (a.tentativas||[]).length;
+  });
+
+  return {filtered, userMap, usuarios, clientes};
+}
+
+function renderGestao(){
+  const filterU = (document.getElementById('gestao-filter-usuario')||{}).value || '';
+  const filterP = (document.getElementById('gestao-filter-periodo')||{}).value || '';
+  const {filtered, userMap, usuarios, clientes} = getGestaoData(filterU, filterP);
+
+  // Populate user filter dropdown
+  const sel = document.getElementById('gestao-filter-usuario');
+  if(sel){
+    const cur = sel.value;
+    const logins = [...new Set((DB.get('agendamentos')||[]).map(a=>a.usuario_login).filter(Boolean))];
+    sel.innerHTML = '<option value="">Todos os usuários</option>' +
+      logins.map(l => {
+        const u = usuarios.find(x=>x.login===l);
+        return `<option value="${l}" ${l===cur?'selected':''}>${u?u.nome:l}</option>`;
+      }).join('');
+  }
+
+  // Global KPIs
+  const total = filtered.length;
+  const concluido = filtered.filter(a=>(a.status||'').toLowerCase()==='concluido').length;
+  const pendente = filtered.filter(a=>(a.status||'Pendente').toLowerCase()==='pendente').length;
+  const andamento = filtered.filter(a=>(a.status||'').toLowerCase()==='em andamento').length;
+  const now = new Date();
+  const atrasado = filtered.filter(a=>{
+    const dt=parseDtAgenda(a.data_hora_agendamento);
+    return dt&&dt<now&&(a.status||'Pendente').toLowerCase()!=='concluido';
+  }).length;
+  const totalTent = filtered.reduce((s,a)=>s+(a.tentativas||[]).length, 0);
+
+  const kpiGrid = document.getElementById('gestao-kpi-grid');
+  if(kpiGrid) kpiGrid.innerHTML = [
+    {label:'Total Agendamentos',num:total,icon:'calendar_month',color:'var(--primary)',bg:'var(--primary-s)'},
+    {label:'Pendentes',num:pendente,icon:'pending',color:'var(--orange)',bg:'var(--orange-s)'},
+    {label:'Em Andamento',num:andamento,icon:'pending_actions',color:'var(--warning)',bg:'var(--warning-s)'},
+    {label:'Concluídos',num:concluido,icon:'check_circle',color:'var(--success)',bg:'var(--success-s)'},
+    {label:'Atrasados',num:atrasado,icon:'alarm_off',color:'var(--danger)',bg:'var(--danger-s)'},
+    {label:'Tentativas',num:totalTent,icon:'phone_missed',color:'var(--purple)',bg:'var(--purple-s)'},
+  ].map(k=>`<div class="kpi-card">
+    <div class="kpi-icon" style="background:${k.bg}"><span class="ms material-symbols-outlined" style="color:${k.color}">${k.icon}</span></div>
+    <div class="kpi-label">${k.label}</div>
+    <div class="kpi-num" style="color:${k.color}">${k.num}</div>
+  </div>`).join('');
+
+  // Ranking por usuário
+  const ranking = document.getElementById('gestao-ranking');
+  const avatarColors = ['#1e3a8a','#f97316','#10b981','#8b5cf6','#ef4444','#f59e0b'];
+  if(ranking){
+    const sorted = Object.values(userMap).sort((a,b)=>b.concluido - a.concluido);
+    if(!sorted.length){
+      ranking.innerHTML = '<div class="empty-state"><span class="ms material-symbols-outlined">people</span><p>Nenhum dado disponível</p></div>';
+    } else {
+      ranking.innerHTML = sorted.map((u,i)=>{
+        const uObj = usuarios.find(x=>x.login===u.login);
+        const nome = uObj ? uObj.nome : u.login;
+        const nivel = uObj ? uObj.nivel : 'operador';
+        const nivelLabel = {administrador:'Admin',gerente:'Gerente',operador:'Operador'};
+        const pct = u.total > 0 ? Math.round((u.concluido/u.total)*100) : 0;
+        const col = avatarColors[i % avatarColors.length];
+        return `<div class="user-rank-card">
+          <div class="user-rank-hd">
+            <div class="user-rank-av" style="background:${col}">${nome.charAt(0).toUpperCase()}</div>
+            <div style="flex:1">
+              <div class="user-rank-name">${nome}</div>
+              <div class="user-rank-role"><span class="badge badge-${nivel}" style="font-size:.62rem;padding:2px 7px">${nivelLabel[nivel]||nivel}</span></div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:1.1rem;font-weight:800;color:var(--success)">${pct}%</div>
+              <div style="font-size:.7rem;color:var(--muted)">conclusão</div>
+            </div>
+          </div>
+          <div class="user-rank-stats">
+            <div class="urs total"><div class="urs-num">${u.total}</div><div class="urs-lbl">Total</div></div>
+            <div class="urs pendente"><div class="urs-num">${u.pendente}</div><div class="urs-lbl">Pend.</div></div>
+            <div class="urs andamento"><div class="urs-num">${u.andamento}</div><div class="urs-lbl">Andamento</div></div>
+            <div class="urs concluido"><div class="urs-num">${u.concluido}</div><div class="urs-lbl">Concluído</div></div>
+          </div>
+          ${u.atrasado>0?`<div style="margin-top:8px;font-size:.74rem;color:var(--danger);font-weight:700">⚠️ ${u.atrasado} atrasado${u.atrasado>1?'s':''}</div>`:''}
+          ${u.tentativas>0?`<div style="font-size:.72rem;color:var(--muted);margin-top:2px">📞 ${u.tentativas} tentativa${u.tentativas>1?'s':''} registrada${u.tentativas>1?'s':''}</div>`:''}
+          <div class="kanban-progress" style="margin-top:8px"><div class="kanban-progress-fill" style="width:${pct}%;background:${pct===100?'var(--success)':pct>50?'var(--orange)':'var(--danger)'}"></div></div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // Status bars chart
+  const chart = document.getElementById('gestao-status-chart');
+  if(chart && total > 0){
+    const statuses = [
+      {label:'Concluídos',count:concluido,color:'var(--success)',pct:Math.round((concluido/total)*100)},
+      {label:'Pendentes',count:pendente,color:'var(--orange)',pct:Math.round((pendente/total)*100)},
+      {label:'Em Andamento',count:andamento,color:'var(--warning)',pct:Math.round((andamento/total)*100)},
+      {label:'Atrasados',count:atrasado,color:'var(--danger)',pct:Math.round((atrasado/total)*100)},
+    ];
+    chart.innerHTML = statuses.map(s=>`
+      <div class="status-bar-row">
+        <div class="status-bar-label">${s.label}</div>
+        <div class="status-bar-track"><div class="status-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
+        <div class="status-bar-count" style="color:${s.color}">${s.count}</div>
+      </div>`).join('') +
+      `<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:8px">Taxa de conclusão geral:</div>
+        <div style="font-size:1.8rem;font-weight:800;color:${concluido/total>=.7?'var(--success)':concluido/total>=.4?'var(--warning)':'var(--danger)'}">
+          ${total>0?Math.round((concluido/total)*100):0}%
+        </div>
+        <div style="font-size:.76rem;color:var(--muted)">${concluido} de ${total} atendimentos concluídos</div>
+      </div>`;
+  } else if(chart){
+    chart.innerHTML = '<div class="empty-state"><span class="ms material-symbols-outlined">bar_chart</span><p>Nenhum dado</p></div>';
+  }
+
+  // Detailed table
+  const tbody = document.getElementById('gestao-agenda-tbody');
+  if(tbody){
+    if(!filtered.length){
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><span class="ms material-symbols-outlined">calendar_month</span><p>Nenhum agendamento encontrado</p></div></td></tr>`;
+    } else {
+      const sorted2 = [...filtered].sort((a,b)=>{
+        const da=parseDtAgenda(a.data_hora_agendamento);
+        const db2=parseDtAgenda(b.data_hora_agendamento);
+        return(db2?db2.getTime():0)-(da?da.getTime():0); // most recent first
+      });
+      const statusBadge={'pendente':'badge-pendente','concluido':'badge-concluido','em andamento':'badge-aguardando'};
+      tbody.innerHTML = sorted2.map(a=>{
+        const uObj = usuarios.find(x=>x.login===a.usuario_login);
+        const nomeU = uObj ? uObj.nome : (a.usuario_login||'—');
+        const c2 = clientes.find(cl=>cl.id===a.cliente_ref);
+        const nomeC = a.cliente_nome || (c2?c2.nome:'—');
+        const tipo = c2 ? `<span class="badge badge-${(c2.tipo||'Normal').toLowerCase()}">${c2.tipo}</span>` : '—';
+        const dt = parseDtAgenda(a.data_hora_agendamento);
+        const dtStr = dt ? dt.toLocaleString('pt-BR') : (a.data_hora_agendamento||'—');
+        const past = dt && dt < now && (a.status||'Pendente').toLowerCase() !== 'concluido';
+        const tent = (a.tentativas||[]).length;
+        const cl = getChecklistStats(a.checklist||'[]');
+        const sKey = (a.status||'Pendente').toLowerCase();
+        return `<tr>
+          <td>
+            <div style="font-weight:700;font-size:.84rem">${nomeU}</div>
+            <div style="font-size:.72rem;color:var(--muted)">${a.usuario_login||''}</div>
+          </td>
+          <td>
+            <strong>${nomeC}</strong>
+            ${c2&&c2.placa?`<div style="font-size:.74rem;color:var(--muted)">${c2.placa}</div>`:''}
+          </td>
+          <td>${tipo}</td>
+          <td style="color:${past?'var(--danger)':'inherit'};font-weight:${past?'700':'400'}">
+            ${dtStr}${past?`<div style="font-size:.7rem;color:var(--danger)">⚠️ Atrasado</div>`:''}
+          </td>
+          <td style="text-align:center">
+            ${tent>0?`<span class="badge ${tent>=3?'badge-critico':'badge-medio'}">${tent}x</span>`:`<span style="color:var(--muted)">—</span>`}
+          </td>
+          <td>
+            ${cl.total>0?`<div style="font-size:.74rem">${cl.done}/${cl.total}</div>
+            <div style="height:4px;background:var(--border);border-radius:2px;width:60px;overflow:hidden;margin-top:3px">
+              <div style="height:100%;width:${cl.pct}%;background:${cl.pct===100?'var(--success)':'var(--orange)'};border-radius:2px"></div>
+            </div>`:`<span style="color:var(--muted);font-size:.76rem">—</span>`}
+          </td>
+          <td><span class="badge ${statusBadge[sKey]||'badge-pendente'}">${a.status||'Pendente'}</span></td>
+          <td><button class="btn btn-primary btn-sm btn-icon" onclick="abrirAtendimento('${a.id}')" title="Abrir atendimento"><span class="ms material-symbols-outlined">phone_in_talk</span></button></td>
+        </tr>`;
+      }).join('');
+    }
+  }
 }
 
 // ==================== CONFIGURAÇÕES ====================

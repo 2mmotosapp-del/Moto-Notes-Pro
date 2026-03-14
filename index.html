@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -292,6 +293,157 @@ tbody tr:last-child td{border-bottom:none}
 .form-section-title{font-size:.78rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .form-section-title .ms{font-size:17px}
 
+
+/* ── OVERDUE ALERT BANNER ── */
+#overdue-banner{position:fixed;top:62px;left:260px;right:0;z-index:800;transition:left var(--tr);display:none}
+#overdue-banner.col{left:72px}
+.overdue-banner-inner{background:linear-gradient(135deg,#991b1b,var(--danger));color:#fff;padding:10px 24px;display:flex;align-items:center;gap:12px;font-size:.84rem;font-weight:600}
+.overdue-banner-inner .ms{font-size:20px;flex-shrink:0}
+.overdue-banner-items{display:flex;flex-direction:column;gap:2px;flex:1}
+.overdue-banner-item{font-size:.78rem;opacity:.92}
+
+/* ── ALERT POPUP MODAL ── */
+.alert-popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.alert-popup{background:#fff;border-radius:var(--r3);width:100%;max-width:500px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.alert-popup-hd{background:linear-gradient(135deg,#991b1b,var(--danger));padding:20px 24px;color:#fff;display:flex;align-items:center;gap:12px}
+.alert-popup-hd .ms{font-size:28px}
+.alert-popup-hd h3{font-size:1.1rem;font-weight:800}
+.alert-popup-body{padding:20px 24px}
+.alert-popup-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--danger-s);border-radius:var(--r);border-left:3px solid var(--danger);margin-bottom:8px}
+.alert-popup-item .ms{font-size:18px;color:var(--danger);flex-shrink:0}
+.alert-popup-item-name{font-weight:700;font-size:.88rem}
+.alert-popup-item-time{font-size:.74rem;color:var(--muted);margin-top:2px}
+.alert-popup-ft{padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+
+/* ── KANBAN ── */
+.kanban-board{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:4px}
+.kanban-col{background:var(--bg);border-radius:var(--r2);padding:16px;min-height:400px;border:1px solid var(--border)}
+.kanban-col-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.kanban-col-title{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
+.kanban-col-count{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.kanban-card{background:var(--surface);border-radius:var(--r);padding:14px;margin-bottom:10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:all .2s}
+.kanban-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.kanban-card-title{font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.kanban-card-sub{font-size:.74rem;color:var(--muted);margin-bottom:8px}
+.kanban-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.kanban-card-checklist{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px}
+.kanban-progress{height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}
+.kanban-progress-fill{height:100%;border-radius:2px;transition:width .4s}
+.kanban-col.afazer .kanban-col-title{color:var(--muted)}
+.kanban-col.afazer .kanban-col-count{background:#f1f5f9;color:#64748b}
+.kanban-col.afazer{border-top:3px solid #94a3b8}
+.kanban-col.andamento .kanban-col-title{color:var(--orange)}
+.kanban-col.andamento .kanban-col-count{background:var(--orange-s);color:var(--orange-h)}
+.kanban-col.andamento{border-top:3px solid var(--orange)}
+.kanban-col.concluido .kanban-col-title{color:var(--success)}
+.kanban-col.concluido .kanban-col-count{background:var(--success-s);color:var(--success)}
+.kanban-col.concluido{border-top:3px solid var(--success)}
+
+/* ── CHECKLIST MODAL ── */
+.checklist-container{margin-top:8px}
+.checklist-add-row{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+.checklist-add-row input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:'Sora',sans-serif;font-size:.84rem;outline:none;transition:.18s;background:var(--bg)}
+.checklist-add-row input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(30,58,138,.08)}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg);border-radius:var(--r);margin-bottom:6px;border:1px solid var(--border);transition:.2s}
+.checklist-item.done{background:var(--success-s);border-color:rgba(16,185,129,.2)}
+.checklist-item.done .ci-text{text-decoration:line-through;color:var(--muted)}
+.ci-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.2s;background:#fff;margin-top:1px}
+.ci-check.checked{background:var(--success);border-color:var(--success)}
+.ci-check .ms{font-size:14px;color:#fff;display:none}
+.ci-check.checked .ms{display:block}
+.ci-text{flex:1;font-size:.84rem;color:var(--text);line-height:1.4}
+.ci-done-time{font-size:.7rem;color:var(--success);margin-top:2px;display:none}
+.checklist-item.done .ci-done-time{display:block}
+.ci-delete{background:none;border:none;cursor:pointer;color:var(--light);padding:2px;border-radius:4px;transition:.15s;flex-shrink:0}
+.ci-delete:hover{color:var(--danger);background:var(--danger-s)}
+.ci-delete .ms{font-size:16px}
+.checklist-progress-bar{height:6px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.checklist-progress-fill{height:100%;background:var(--success);border-radius:3px;transition:width .4s}
+.checklist-progress-label{font-size:.75rem;color:var(--muted);margin-bottom:6px;font-weight:600}
+
+/* ── VIEW TOGGLE ── */
+.view-toggle{display:flex;gap:4px;background:var(--bg);border-radius:var(--r);padding:3px}
+.view-btn{padding:6px 10px;border-radius:8px;border:none;background:none;cursor:pointer;color:var(--muted);transition:.18s;display:flex;align-items:center;gap:4px;font-size:.78rem;font-weight:600;font-family:'Sora',sans-serif}
+.view-btn.active{background:var(--surface);color:var(--primary);box-shadow:var(--sh)}
+.view-btn .ms{font-size:18px}
+
+
+/* ── ATENDIMENTO MODAL ── */
+.atend-header{background:linear-gradient(135deg,#0d1f4e,#1e3a8a);color:#fff;padding:20px 24px;display:flex;gap:16px;align-items:flex-start}
+.atend-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;flex-shrink:0}
+.atend-info h3{font-size:1.1rem;font-weight:800;margin-bottom:3px}
+.atend-info .atend-meta{font-size:.76rem;opacity:.75;display:flex;gap:14px;flex-wrap:wrap}
+.atend-info .atend-meta span{display:flex;align-items:center;gap:4px}
+.atend-tabs{display:flex;gap:0;background:var(--bg);border-bottom:2px solid var(--border);padding:0 22px}
+.atend-tab{padding:12px 18px;border:none;background:none;font-family:'Sora',sans-serif;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:.18s;border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;align-items:center;gap:6px}
+.atend-tab .ms{font-size:17px}
+.atend-tab.active{color:var(--primary);border-bottom-color:var(--orange);font-weight:700}
+.atend-tab-panel{display:none;padding:20px 22px}
+.atend-tab-panel.active{display:block}
+
+/* Tentativas de contato */
+.tentativa-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.tentativa-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r);border:1px solid var(--border);background:var(--surface)}
+.tentativa-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tentativa-icon .ms{font-size:18px}
+.tent-nao-atendeu .tentativa-icon{background:var(--danger-s)}
+.tent-nao-atendeu .tentativa-icon .ms{color:var(--danger)}
+.tent-caixa-postal .tentativa-icon{background:var(--warning-s)}
+.tent-caixa-postal .tentativa-icon .ms{color:var(--warning)}
+.tent-numero-errado .tentativa-icon{background:var(--purple-s)}
+.tent-numero-errado .tentativa-icon .ms{color:var(--purple)}
+.tent-atendeu .tentativa-icon{background:var(--success-s)}
+.tent-atendeu .tentativa-icon .ms{color:var(--success)}
+.tentativa-info{flex:1}
+.tentativa-tipo{font-size:.82rem;font-weight:700;color:var(--text)}
+.tentativa-time{font-size:.72rem;color:var(--muted);margin-top:1px}
+.tentativa-obs{font-size:.78rem;color:var(--muted);margin-top:3px;font-style:italic}
+.tent-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tent-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:.18s;color:var(--text)}
+.tent-btn:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.tent-btn.tb-nao{border-color:var(--danger);color:var(--danger)}
+.tent-btn.tb-nao:hover{background:var(--danger);color:#fff}
+.tent-btn.tb-postal{border-color:var(--warning);color:#d97706}
+.tent-btn.tb-postal:hover{background:var(--warning);color:#fff}
+.tent-btn.tb-errado{border-color:var(--purple);color:var(--purple)}
+.tent-btn.tb-errado:hover{background:var(--purple);color:#fff}
+.tent-btn.tb-atendeu{border-color:var(--success);color:var(--success)}
+.tent-btn.tb-atendeu:hover{background:var(--success);color:#fff}
+.tent-btn .ms{font-size:18px}
+
+/* Anotação rápida */
+.quick-note-area{background:var(--bg);border-radius:var(--r2);padding:16px}
+.quick-note-area textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:12px;font-family:'Sora',sans-serif;font-size:.84rem;color:var(--text);outline:none;resize:vertical;min-height:120px;background:#fff;transition:.18s}
+.quick-note-area textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(30,58,138,.08)}
+
+/* Checklist de atendimento */
+.atend-checklist-item{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:var(--bg);border-radius:var(--r);margin-bottom:6px;border:1.5px solid var(--border);transition:.2s;cursor:pointer}
+.atend-checklist-item:hover{border-color:var(--primary);background:var(--primary-s)}
+.atend-checklist-item.done{background:var(--success-s);border-color:rgba(16,185,129,.25)}
+.atend-checklist-item.done .ac-text{text-decoration:line-through;color:var(--muted)}
+.ac-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;background:#fff;margin-top:1px}
+.ac-check.checked{background:var(--success);border-color:var(--success)}
+.ac-check .ms{font-size:15px;color:#fff;display:none}
+.ac-check.checked .ms{display:block}
+.ac-body{flex:1}
+.ac-text{font-size:.84rem;color:var(--text);font-weight:500}
+.ac-done-at{font-size:.72rem;color:var(--success);margin-top:3px;font-weight:600}
+
+/* Histórico de atendimentos */
+.atend-hist-item{padding:12px 14px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--border);margin-bottom:8px}
+.atend-hist-item.type-nota{border-color:var(--primary)}
+.atend-hist-item.type-tentativa{border-color:var(--orange)}
+.atend-hist-item.type-concluido{border-color:var(--success)}
+.atend-hist-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.atend-hist-tipo{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.atend-hist-time{font-size:.7rem;color:var(--muted)}
+.atend-hist-text{font-size:.82rem;color:var(--text);line-height:1.5}
+
+/* Resumo de tentativas no card agendamento */
+.agenda-row-extra{font-size:.74rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:6px}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .sidebar{width:72px}
@@ -488,10 +640,17 @@ tbody tr:last-child td{border-bottom:none}
 <div class="page" id="page-agendamentos">
   <div class="sec-hd">
     <div class="sec-title"><span class="ms material-symbols-outlined">calendar_month</span>Agendamentos</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <select id="filter-agenda-status" onchange="renderAgendamentos()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:8px 12px;font-family:'Sora',sans-serif;font-size:.82rem;outline:none">
+        <option value="">Todos</option>
+        <option value="Pendente">Pendentes</option>
+        <option value="Concluido">Concluídos</option>
+      </select>
+    </div>
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Cliente</th><th>Placa</th><th>Tipo</th><th>Data / Hora</th><th>Status</th><th>Ações</th></tr></thead>
+      <thead><tr><th>Cliente / Moto</th><th>Tipo</th><th>Data / Hora</th><th>Tentativas</th><th>Status</th><th>Ações</th></tr></thead>
       <tbody id="agenda-tbody"></tbody>
     </table>
   </div>
@@ -501,7 +660,13 @@ tbody tr:last-child td{border-bottom:none}
 <div class="page" id="page-tarefas">
   <div class="sec-hd">
     <div class="sec-title"><span class="ms material-symbols-outlined">task_alt</span>Tarefas</div>
-    <button class="btn btn-primary" onclick="openModalTarefa()"><span class="ms material-symbols-outlined">add</span>Nova Tarefa</button>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-view-lista" onclick="setTarefasView('lista')"><span class="ms material-symbols-outlined">view_list</span>Lista</button>
+        <button class="view-btn" id="btn-view-kanban" onclick="setTarefasView('kanban')"><span class="ms material-symbols-outlined">view_kanban</span>Kanban</button>
+      </div>
+      <button class="btn btn-primary" onclick="openModalTarefa()"><span class="ms material-symbols-outlined">add</span>Nova Tarefa</button>
+    </div>
   </div>
   <div class="filter-bar">
     <div class="search-wrap">
@@ -527,11 +692,40 @@ tbody tr:last-child td{border-bottom:none}
       </select>
     </div>
   </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Título</th><th>Descrição</th><th>Prioridade</th><th>Vencimento</th><th>Status</th><th>Usuário</th><th>Ações</th></tr></thead>
-      <tbody id="tarefas-tbody"></tbody>
-    </table>
+  <!-- Vista Lista -->
+  <div id="tarefas-view-lista">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Título</th><th>Checklist</th><th>Prioridade</th><th>Vencimento</th><th>Status</th><th>Usuário</th><th>Ações</th></tr></thead>
+        <tbody id="tarefas-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Vista Kanban -->
+  <div id="tarefas-view-kanban" style="display:none">
+    <div class="kanban-board">
+      <div class="kanban-col afazer">
+        <div class="kanban-col-hd">
+          <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">radio_button_unchecked</span>A Fazer</div>
+          <span class="kanban-col-count" id="kanban-count-afazer">0</span>
+        </div>
+        <div id="kanban-afazer"></div>
+      </div>
+      <div class="kanban-col andamento">
+        <div class="kanban-col-hd">
+          <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">pending</span>Em Andamento</div>
+          <span class="kanban-col-count" id="kanban-count-andamento">0</span>
+        </div>
+        <div id="kanban-andamento"></div>
+      </div>
+      <div class="kanban-col concluido">
+        <div class="kanban-col-hd">
+          <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">check_circle</span>Concluído</div>
+          <span class="kanban-col-count" id="kanban-count-concluido">0</span>
+        </div>
+        <div id="kanban-concluido"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -700,17 +894,30 @@ tbody tr:last-child td{border-bottom:none}
           <select id="t-cliente-id"><option value="">Selecione o cliente...</option></select>
         </div>
         <div class="fg" style="margin-bottom:14px"><label>Título *</label><input id="t-titulo" placeholder="Título da tarefa"/></div>
-        <div class="fg" style="margin-bottom:14px"><label>Descrição</label><textarea id="t-desc" rows="3" placeholder="Detalhes..."></textarea></div>
+        <div class="fg" style="margin-bottom:14px"><label>Descrição</label><textarea id="t-desc" rows="2" placeholder="Detalhes..."></textarea></div>
         <div class="form-grid g2">
           <div class="fg"><label>Prioridade</label>
             <select id="t-prioridade"><option value="Baixa">Baixa</option><option value="Media">Média</option><option value="Alta">Alta</option></select>
           </div>
           <div class="fg"><label>Status</label>
-            <select id="t-status"><option value="Pendente">Pendente</option><option value="Em Andamento">Em Andamento</option><option value="Concluida">Concluída</option></select>
+            <select id="t-status" disabled title="Status calculado automaticamente pelo checklist"><option value="Pendente">Pendente</option><option value="Em Andamento">Em Andamento</option><option value="Concluida">Concluída</option></select>
           </div>
           <div class="fg"><label>Data de Vencimento</label><input id="t-venc" type="date"/></div>
           <div class="fg"><label>Hora do Agendamento</label><input id="t-hora" type="time"/></div>
         </div>
+      </div>
+      <!-- CHECKLIST -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="ms material-symbols-outlined">checklist</span>Checklist de Itens
+          <span style="font-size:.72rem;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px">— Status calculado automaticamente</span>
+        </div>
+        <div class="checklist-add-row">
+          <input id="t-checklist-input" placeholder="Adicionar item ao checklist..." onkeydown="if(event.key==='Enter'){event.preventDefault();addChecklistItem()}"/>
+          <button class="btn btn-primary btn-sm" onclick="addChecklistItem()"><span class="ms material-symbols-outlined">add</span>Adicionar</button>
+        </div>
+        <div class="checklist-progress-label" id="cl-progress-label" style="display:none">0 de 0 concluídos</div>
+        <div class="checklist-progress-bar" id="cl-progress-bar" style="display:none"><div class="checklist-progress-fill" id="cl-progress-fill" style="width:0%"></div></div>
+        <div class="checklist-container" id="t-checklist-list"></div>
       </div>
       <div id="t-agenda-info" style="display:none" class="alert alert-warning">
         <span class="ms material-symbols-outlined">event</span>
@@ -922,7 +1129,7 @@ async function carregarDadosBaserow(){
       id:String(r.id),rowId:r.id,titulo:r.titulo_tarefa,descricao:r.descricao_tarefa,
       prioridade:r.prioridade_tarefa,status:r.status_tarefa,
       vencimento:r.data_vencimento,cliente_ref:r.cliente_ref||'',
-      usuario_login:r.usuario_login
+      usuario_login:r.usuario_login,checklist:r.checklist||'[]'
     })));
     const ctRows=await brGet(cfg.tableContatos);
     DB.set('contatos',ctRows.filter(r=>isAdmin||r.usuario_login===meuLogin).map(r=>({
@@ -983,9 +1190,12 @@ function navigate(sec,btn){
 }
 
 function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('col');
+  const sb=document.getElementById('sidebar');
+  sb.classList.toggle('col');
   document.getElementById('main').classList.toggle('col');
   document.getElementById('topbar').classList.toggle('col');
+  const banner=document.getElementById('overdue-banner');
+  if(banner)banner.classList.toggle('col',sb.classList.contains('col'));
 }
 
 // ==================== CLOCK ====================
@@ -1002,30 +1212,117 @@ function startClock(){
 }
 
 // ==================== ALERT CHECKER ====================
+let _popupShown = new Set();
+
 function startAlertChecker(){
-  setInterval(()=>{
-    const ags=DB.get('agendamentos')||[];
-    const now=new Date();
-    ags.forEach(ag=>{
-      if(ag.status!=='Pendente')return;
-      const dt=parseDtAgenda(ag.data_hora_agendamento)||new Date(ag.data_hora_agendamento);
-      const diff=(dt-now)/60000;
-      if(diff>0&&diff<=30&&!ag.alertado){
-        showToast('Lembrete',`Agendamento com ${ag.cliente_nome} em ${Math.round(diff)} min!`,'warning');
-        DB.set('agendamentos',ags.map(a=>a.id===ag.id?{...a,alertado:true}:a));
-      }
+  checkAlertsNow();
+  setInterval(checkAlertsNow, 30000); // check every 30s
+}
+
+function checkAlertsNow(){
+  const ags=DB.get('agendamentos')||[];
+  const now=new Date();
+  const overdueItems=[];
+  const upcomingAlerts=[];
+
+  ags.forEach(ag=>{
+    if(ag.status!=='Pendente')return;
+    const dt=parseDtAgenda(ag.data_hora_agendamento);
+    if(!dt)return;
+    const diffMin=(dt-now)/60000;
+
+    // Overdue: past the scheduled time
+    if(diffMin<0){
+      overdueItems.push({id:ag.id, nome:ag.cliente_nome||'Cliente', dt, diffMin});
+    }
+    // Upcoming: within 30 min → popup
+    else if(diffMin<=30&&!ag.alertado&&!_popupShown.has(ag.id)){
+      upcomingAlerts.push({ag, diffMin, dt});
+    }
+  });
+
+  // Show overdue banner
+  const banner=document.getElementById('overdue-banner');
+  const bannerItems=document.getElementById('overdue-banner-items');
+  if(banner&&bannerItems){
+    // Only show banner for agendamentos of current user
+    const mine=overdueItems.filter(o=>{
+      const agData=(DB.get('agendamentos')||[]).find(a=>a.id===o.id);
+      return agData&&(state.currentUser?.nivel==='administrador'||agData.usuario_login===state.currentUser?.login);
     });
-    const tarefas=DB.get('tarefas')||[];
-    tarefas.forEach(t=>{
-      if(t.status==='Concluida'||!t.vencimento)return;
-      const dt=new Date(t.vencimento);
-      const diffH=(dt-now)/3600000;
-      if(diffH>=0&&diffH<=24&&!t.alertado){
-        showToast('Tarefa',`"${t.titulo}" vence hoje!`,'warning');
-        DB.set('tarefas',tarefas.map(x=>x.id===t.id?{...x,alertado:true}:x));
-      }
-    });
-  },60000);
+    if(mine.length>0){
+      banner.style.display='block';
+      // sync sidebar col state
+      const sb=document.getElementById('sidebar');
+      if(sb&&sb.classList.contains('col'))banner.classList.add('col');
+      else banner.classList.remove('col');
+      bannerItems.innerHTML=mine.map(o=>{
+        const ago=Math.round(Math.abs(o.diffMin));
+        const agoStr=ago<60?`${ago} min atrás`:`${Math.round(ago/60)}h atrás`;
+        return `<div class="overdue-banner-item">⚠️ <strong>${o.nome}</strong> — agendado para ${o.dt.toLocaleString('pt-BR')} (${agoStr})</div>`;
+      }).join('');
+    } else {
+      banner.style.display='none';
+    }
+  }
+
+  // Show popup for upcoming alerts
+  upcomingAlerts.forEach(({ag,diffMin,dt})=>{
+    _popupShown.add(ag.id);
+    DB.set('agendamentos',(DB.get('agendamentos')||[]).map(a=>a.id===ag.id?{...a,alertado:true}:a));
+    showAlertPopup(ag, diffMin, dt);
+  });
+
+  // Tarefas alerts
+  const tarefas=DB.get('tarefas')||[];
+  tarefas.forEach(t=>{
+    if(t.status==='Concluida'||!t.vencimento)return;
+    const dt=new Date(t.vencimento);
+    const diffH=(dt-now)/3600000;
+    if(diffH>=0&&diffH<=24&&!t.alertado){
+      showToast('Tarefa',`"${t.titulo}" vence hoje!`,'warning');
+      DB.set('tarefas',tarefas.map(x=>x.id===t.id?{...x,alertado:true}:x));
+    }
+  });
+}
+
+function showAlertPopup(ag, diffMin, dt){
+  const container=document.getElementById('alert-popup-container');
+  if(!container)return;
+  const id='popup-'+ag.id;
+  const div=document.createElement('div');
+  div.className='alert-popup-overlay';
+  div.id=id;
+  const minTxt=Math.round(diffMin);
+  div.innerHTML=`
+    <div class="alert-popup">
+      <div class="alert-popup-hd">
+        <span class="ms material-symbols-outlined">alarm</span>
+        <div>
+          <h3>Lembrete de Agendamento</h3>
+          <div style="font-size:.8rem;opacity:.85">em ${minTxt} minuto${minTxt!==1?'s':''}</div>
+        </div>
+      </div>
+      <div class="alert-popup-body">
+        <div class="alert-popup-item">
+          <span class="ms material-symbols-outlined">person</span>
+          <div>
+            <div class="alert-popup-item-name">${ag.cliente_nome||'Cliente'}</div>
+            <div class="alert-popup-item-time">📅 ${dt.toLocaleString('pt-BR')}</div>
+          </div>
+        </div>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:12px">Você tem um agendamento programado. Prepare-se para o atendimento!</p>
+      </div>
+      <div class="alert-popup-ft">
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('${id}').remove()">Dispensar</button>
+        <button class="btn btn-primary btn-sm" onclick="navigate('agendamentos',document.querySelector('[onclick*=agendamentos]'));document.getElementById('${id}').remove()">
+          <span class="ms material-symbols-outlined">calendar_month</span>Ver Agendamentos
+        </button>
+      </div>
+    </div>`;
+  container.appendChild(div);
+  // Auto-dismiss after 2 minutes
+  setTimeout(()=>{if(div.parentNode)div.remove();},120000);
 }
 
 // ==================== DASHBOARD ====================
@@ -1237,31 +1534,55 @@ function renderAgendamentos(){
   const ags=DB.get('agendamentos')||[];
   const clientes=DB.get('clientes')||[];
   const tbody=document.getElementById('agenda-tbody');
-  if(!ags.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><span class="ms material-symbols-outlined">calendar_month</span><p>Nenhum agendamento</p></div></td></tr>`;return;}
-  const sorted=[...ags].sort((a,b)=>{
+  const filterStatus=(document.getElementById('filter-agenda-status')||{}).value||'';
+  let list=[...ags];
+  if(filterStatus)list=list.filter(a=>a.status===filterStatus);
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><span class="ms material-symbols-outlined">calendar_month</span><p>Nenhum agendamento</p></div></td></tr>`;return;}
+  list.sort((a,b)=>{
     const da=parseDtAgenda(a.data_hora_agendamento);
     const db2=parseDtAgenda(b.data_hora_agendamento);
     return(da?da.getTime():0)-(db2?db2.getTime():0);
   });
-  tbody.innerHTML=sorted.map(a=>{
+  tbody.innerHTML=list.map(a=>{
     const c=clientes.find(cl=>cl.id===a.cliente_ref);
     const dt=parseDtAgenda(a.data_hora_agendamento);
     const dtStr=dt?dt.toLocaleString('pt-BR'):(a.data_hora_agendamento||'—');
     const past=dt&&dt<new Date()&&a.status==='Pendente';
     const nomeCliente=a.cliente_nome||(c?c.nome:'—');
-    const placa=c?c.placa:(a.placa||'—');
+    const placa=c?`<code style="background:var(--bg);padding:1px 7px;border-radius:5px;font-size:.78rem">${c.placa||'—'}</code>`:'—';
     const tipo=c?`<span class="badge badge-${(c.tipo||'Normal').toLowerCase()}">${c.tipo}</span>`:'—';
     const statusBadge=(a.status||'Pendente').toLowerCase();
+    // Tentativas summary
+    const tentativas=(a.tentativas||[]);
+    const tentHtml=tentativas.length?`<div class="agenda-row-extra">${tentativas.slice(-3).map(t=>{
+      const icons={nao_atendeu:'📵',caixa_postal:'📭',numero_errado:'🚫',atendeu:'✅'};
+      return `<span title="${t.tipo.replace('_',' ')} — ${t.hora}">${icons[t.tipo]||'📞'}</span>`;
+    }).join('')}${tentativas.length>3?`<span style="font-size:.7rem">+${tentativas.length-3}</span>`:''}${tentativas.length===1?`<span>${tentativas[0].tipo.replace('_',' ')}</span>`:''}</div>`:
+    `<div class="agenda-row-extra" style="opacity:.5">Nenhuma tentativa</div>`;
+    // Checklist progress from associated task
+    const tarefaVinc=(DB.get('tarefas')||[]).find(t=>t.cliente_ref===a.cliente_ref&&t.status!=='Concluida');
+    const clHtml=tarefaVinc&&tarefaVinc.checklist?`<div class="agenda-row-extra"><span class="ms material-symbols-outlined" style="font-size:13px">checklist</span>${getChecklistStats(tarefaVinc.checklist).done}/${getChecklistStats(tarefaVinc.checklist).total} itens</div>`:'';
     return `<tr>
-      <td><strong>${nomeCliente}</strong></td>
-      <td><code style="background:var(--bg);padding:2px 8px;border-radius:6px;font-size:.8rem">${placa}</code></td>
+      <td>
+        <div style="cursor:pointer" onclick="abrirAtendimento('${a.id}')">
+          <strong style="color:var(--primary)">${nomeCliente}</strong>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:2px">${placa}${c&&c.tel1?`<span style="font-size:.74rem;color:var(--muted)">${c.tel1}</span>`:''}</div>
+          ${tentHtml}${clHtml}
+        </div>
+      </td>
       <td>${tipo}</td>
-      <td style="color:${past?'var(--danger)':'inherit'};font-weight:${past?'700':'400'}">${dtStr}${past?' ⚠️':''}</td>
+      <td style="color:${past?'var(--danger)':'inherit'};font-weight:${past?'700':'400'}">${dtStr}${past?` <span style="font-size:.7rem">⚠️ Atrasado</span>`:''}</td>
+      <td style="text-align:center">
+        ${tentativas.length>0?`<span class="badge badge-${tentativas.length>=3?'critico':'medio'}" style="font-size:.7rem">${tentativas.length}</span>`:`<span style="color:var(--muted);font-size:.76rem">—</span>`}
+      </td>
       <td><span class="badge badge-${statusBadge}">${a.status||'Pendente'}</span></td>
-      <td><div class="row-actions">
-        <button class="btn btn-success btn-sm" onclick="concluirAgendamento('${a.id}')"><span class="ms material-symbols-outlined">check_circle</span>Concluir</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteAgendamento('${a.id}')"><span class="ms material-symbols-outlined">delete</span></button>
-      </div></td>
+      <td>
+        <div class="row-actions">
+          <button class="btn btn-primary btn-sm" onclick="abrirAtendimento('${a.id}')" title="Abrir painel de atendimento"><span class="ms material-symbols-outlined">phone_in_talk</span>Atender</button>
+          <button class="btn btn-success btn-sm btn-icon" onclick="concluirAgendamento('${a.id}')" title="Concluir"><span class="ms material-symbols-outlined">check_circle</span></button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="deleteAgendamento('${a.id}')" title="Excluir"><span class="ms material-symbols-outlined">delete</span></button>
+        </div>
+      </td>
     </tr>`;
   }).join('');
 }
@@ -1284,6 +1605,104 @@ async function deleteAgendamento(id){
 }
 
 // ==================== TAREFAS ====================
+// ---- Checklist State ----
+let _checklistItems = []; // [{id, text, done, doneAt}]
+
+function addChecklistItem(){
+  const input=document.getElementById('t-checklist-input');
+  const text=(input.value||'').trim();
+  if(!text)return;
+  const item={id:'ci-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),text,done:false,doneAt:null};
+  _checklistItems.push(item);
+  input.value='';
+  renderChecklistModal();
+  updateStatusFromChecklist();
+}
+
+function toggleChecklistItem(id){
+  const item=_checklistItems.find(i=>i.id===id);
+  if(!item)return;
+  item.done=!item.done;
+  item.doneAt=item.done?new Date().toLocaleString('pt-BR'):null;
+  renderChecklistModal();
+  updateStatusFromChecklist();
+}
+
+function removeChecklistItem(id){
+  _checklistItems=_checklistItems.filter(i=>i.id!==id);
+  renderChecklistModal();
+  updateStatusFromChecklist();
+}
+
+function updateStatusFromChecklist(){
+  const total=_checklistItems.length;
+  const done=_checklistItems.filter(i=>i.done).length;
+  const selStatus=document.getElementById('t-status');
+  if(!selStatus)return;
+  if(total===0){selStatus.value='Pendente';}
+  else if(done===0){selStatus.value='Pendente';}
+  else if(done===total){selStatus.value='Concluida';}
+  else{selStatus.value='Em Andamento';}
+  // Update progress
+  updateChecklistProgress(done,total);
+}
+
+function updateChecklistProgress(done,total){
+  const label=document.getElementById('cl-progress-label');
+  const bar=document.getElementById('cl-progress-bar');
+  const fill=document.getElementById('cl-progress-fill');
+  if(!label||!bar||!fill)return;
+  if(total===0){bar.style.display='none';label.style.display='none';return;}
+  bar.style.display='block';label.style.display='block';
+  const pct=total>0?Math.round((done/total)*100):0;
+  fill.style.width=pct+'%';
+  fill.style.background=pct===100?'var(--success)':pct>0?'var(--orange)':'var(--border)';
+  label.textContent=`${done} de ${total} itens concluídos (${pct}%)`;
+}
+
+function renderChecklistModal(){
+  const container=document.getElementById('t-checklist-list');
+  if(!container)return;
+  if(!_checklistItems.length){container.innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-size:.82rem">Nenhum item. Adicione itens acima.</div>';return;}
+  container.innerHTML=_checklistItems.map(item=>`
+    <div class="checklist-item ${item.done?'done':''}" id="ci-wrap-${item.id}">
+      <div class="ci-check ${item.done?'checked':''}" onclick="toggleChecklistItem('${item.id}')">
+        <span class="ms material-symbols-outlined">check</span>
+      </div>
+      <div style="flex:1">
+        <div class="ci-text">${item.text}</div>
+        <div class="ci-done-time">${item.done&&item.doneAt?'✅ Concluído em '+item.doneAt:''}</div>
+      </div>
+      <button class="ci-delete" onclick="removeChecklistItem('${item.id}')">
+        <span class="ms material-symbols-outlined">close</span>
+      </button>
+    </div>`).join('');
+}
+
+function checklistToJson(){return JSON.stringify(_checklistItems);}
+function checklistFromJson(str){
+  try{_checklistItems=JSON.parse(str||'[]');}catch{_checklistItems=[];}
+}
+
+function getAutoStatus(){
+  const total=_checklistItems.length;
+  const done=_checklistItems.filter(i=>i.done).length;
+  if(total===0||done===0)return'Pendente';
+  if(done===total)return'Concluida';
+  return'Em Andamento';
+}
+
+// ---- View Toggle ----
+let _tarefasView='lista';
+function setTarefasView(v){
+  _tarefasView=v;
+  document.getElementById('tarefas-view-lista').style.display=v==='lista'?'block':'none';
+  document.getElementById('tarefas-view-kanban').style.display=v==='kanban'?'block':'none';
+  document.getElementById('btn-view-lista').classList.toggle('active',v==='lista');
+  document.getElementById('btn-view-kanban').classList.toggle('active',v==='kanban');
+  renderTarefas();
+}
+
 function popularSelectClientesTarefa(selectedId){
   const clientes=DB.get('clientes')||[];
   const sel=document.getElementById('t-cliente-id');
@@ -1305,13 +1724,17 @@ function openModalTarefa(id){
       document.getElementById('t-status').value=t.status||'Pendente';
       document.getElementById('t-venc').value=t.vencimento||'';
       document.getElementById('t-hora').value=t.hora||'';
+      checklistFromJson(t.checklist||'[]');
     }
   }else{
     document.getElementById('modal-tarefa-title').textContent='Nova Tarefa';
     ['t-titulo','t-desc','t-venc','t-hora'].forEach(f=>document.getElementById(f).value='');
     document.getElementById('t-prioridade').value='Media';
     document.getElementById('t-status').value='Pendente';
+    _checklistItems=[];
   }
+  renderChecklistModal();
+  updateStatusFromChecklist();
   ['t-venc','t-hora'].forEach(f=>{
     document.getElementById(f).addEventListener('change',()=>{
       const v=document.getElementById('t-venc').value;
@@ -1329,22 +1752,23 @@ async function salvarTarefa(){
   const clienteId=document.getElementById('t-cliente-id').value;
   const descricao=document.getElementById('t-desc').value.trim();
   const prioridade=document.getElementById('t-prioridade').value;
-  const status=document.getElementById('t-status').value;
+  const status=getAutoStatus(); // always from checklist
   const vencimento=document.getElementById('t-venc').value;
   const hora=document.getElementById('t-hora').value;
-  const payload={titulo_tarefa:titulo,descricao_tarefa:descricao,prioridade_tarefa:prioridade,status_tarefa:status,data_vencimento:vencimento,cliente_ref:clienteId,usuario_login:state.currentUser.login};
+  const checklistJson=checklistToJson();
+  const payload={titulo_tarefa:titulo,descricao_tarefa:descricao,prioridade_tarefa:prioridade,status_tarefa:status,data_vencimento:vencimento,cliente_ref:clienteId,usuario_login:state.currentUser.login,checklist:checklistJson};
   const tarefas=DB.get('tarefas')||[];
   let tarefaId=null;
   if(state.editingTarefaId){
     const t=tarefas.find(x=>x.id===state.editingTarefaId);
     if(t?.rowId){const r=await brPatch(cfg.tableTarefas,t.rowId,payload);if(!r)return;}
-    DB.set('tarefas',tarefas.map(t=>t.id===state.editingTarefaId?{...t,titulo,descricao,prioridade,status,vencimento,hora,cliente_ref:clienteId}:t));
+    DB.set('tarefas',tarefas.map(t=>t.id===state.editingTarefaId?{...t,titulo,descricao,prioridade,status,vencimento,hora,cliente_ref:clienteId,checklist:checklistJson}:t));
     tarefaId=state.editingTarefaId;
   }else{
     const row=await brPost(cfg.tableTarefas,payload);
     if(!row)return;
     tarefaId=String(row.id);
-    tarefas.push({id:tarefaId,rowId:row.id,titulo,descricao,prioridade,status,vencimento,hora,cliente_ref:clienteId,usuario_login:state.currentUser.login});
+    tarefas.push({id:tarefaId,rowId:row.id,titulo,descricao,prioridade,status,vencimento,hora,cliente_ref:clienteId,usuario_login:state.currentUser.login,checklist:checklistJson});
     DB.set('tarefas',tarefas);
   }
   if(vencimento&&hora){
@@ -1372,12 +1796,36 @@ async function deleteTarefa(id){
   renderTarefas();updateDashboard();
 }
 
+function getChecklistStats(checklist){
+  try{
+    const items=JSON.parse(checklist||'[]');
+    const total=items.length;
+    const done=items.filter(i=>i.done).length;
+    return{total,done,pct:total>0?Math.round((done/total)*100):0};
+  }catch{return{total:0,done:0,pct:0};}
+}
+
+function renderChecklistInline(checklist){
+  const s=getChecklistStats(checklist);
+  if(s.total===0)return'<span style="color:var(--muted);font-size:.76rem">Sem itens</span>';
+  const pctColor=s.pct===100?'var(--success)':s.pct>0?'var(--orange)':'var(--border)';
+  return `<div style="min-width:120px">
+    <div style="font-size:.74rem;color:var(--muted);margin-bottom:4px">${s.done}/${s.total} itens</div>
+    <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+      <div style="height:100%;width:${s.pct}%;background:${pctColor};border-radius:3px;transition:.4s"></div>
+    </div>
+  </div>`;
+}
+
 function renderTarefas(){
   const tarefas=DB.get('tarefas')||[];
   const q=(document.getElementById('search-tarefas').value||'').toLowerCase();
   const fs=document.getElementById('filter-tarefa-status').value;
   const fp=document.getElementById('filter-tarefa-prioridade').value;
   let list=tarefas.filter(t=>(!q||(t.titulo||'').toLowerCase().includes(q))&&(!fs||t.status===fs)&&(!fp||t.prioridade===fp));
+
+  if(_tarefasView==='kanban'){renderKanban(list);return;}
+
   const tbody=document.getElementById('tarefas-tbody');
   if(!list.length){tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><span class="ms material-symbols-outlined">task_alt</span><p>Nenhuma tarefa</p></div></td></tr>`;return;}
   const priBadge={'Baixa':'badge-normal','Media':'badge-medio','Alta':'badge-critico'};
@@ -1386,18 +1834,336 @@ function renderTarefas(){
     const venc=t.vencimento?new Date(t.vencimento).toLocaleDateString('pt-BR'):'—';
     const vencido=t.vencimento&&new Date(t.vencimento)<new Date()&&t.status!=='Concluida';
     return `<tr>
-      <td><strong>${t.titulo}</strong></td>
-      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${t.descricao||'—'}</td>
+      <td><strong>${t.titulo}</strong>${t.descricao?`<div style="font-size:.74rem;color:var(--muted);margin-top:2px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.descricao}</div>`:''}
+      </td>
+      <td>${renderChecklistInline(t.checklist)}</td>
       <td><span class="badge ${priBadge[t.prioridade]||'badge-normal'}">${t.prioridade||'Baixa'}</span></td>
       <td style="color:${vencido?'var(--danger)':'inherit'};font-weight:${vencido?'700':'400'}">${venc}${vencido?' ⚠️':''}</td>
       <td><span class="badge ${staBadge[t.status]||'badge-pendente'}">${t.status||'Pendente'}</span></td>
-      <td><code style="background:var(--bg);padding:2px 8px;border-radius:6px;font-size:.8rem">${t.usuario_login||'—'}</code></td>
+      <td><code style="background:var(--bg);padding:2px 8px;border-radius:6px;font-size:.78rem">${t.usuario_login||'—'}</code></td>
       <td><div class="row-actions">
-        <button class="btn btn-outline btn-sm btn-icon" onclick="openModalTarefa('${t.id}')"><span class="ms material-symbols-outlined">edit</span></button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteTarefa('${t.id}')"><span class="ms material-symbols-outlined">delete</span></button>
+        <button class="btn btn-outline btn-sm btn-icon" title="Editar" onclick="openModalTarefa('${t.id}')"><span class="ms material-symbols-outlined">edit</span></button>
+        <button class="btn btn-danger btn-sm btn-icon" title="Excluir" onclick="deleteTarefa('${t.id}')"><span class="ms material-symbols-outlined">delete</span></button>
       </div></td>
     </tr>`;
   }).join('');
+}
+
+function renderKanban(list){
+  const cols={Pendente:[],andamento:[],Concluida:[]};
+  list.forEach(t=>{
+    if(t.status==='Concluida')cols.Concluida.push(t);
+    else if(t.status==='Em Andamento')cols.andamento.push(t);
+    else cols.Pendente.push(t);
+  });
+  const priBadge={'Baixa':'badge-normal','Media':'badge-medio','Alta':'badge-critico'};
+  function renderCard(t){
+    const s=getChecklistStats(t.checklist);
+    const vencido=t.vencimento&&new Date(t.vencimento)<new Date()&&t.status!=='Concluida';
+    const pctColor=s.pct===100?'var(--success)':s.pct>0?'var(--orange)':'var(--border)';
+    return `<div class="kanban-card" onclick="openModalTarefa('${t.id}')">
+      <div class="kanban-card-title">${t.titulo}</div>
+      ${t.descricao?`<div class="kanban-card-sub">${t.descricao.slice(0,80)}${t.descricao.length>80?'…':''}</div>`:''}
+      ${s.total>0?`<div class="kanban-progress"><div class="kanban-progress-fill" style="width:${s.pct}%;background:${pctColor}"></div></div>`:''}
+      <div class="kanban-card-footer">
+        <span class="badge ${priBadge[t.prioridade]||'badge-normal'}" style="font-size:.65rem">${t.prioridade}</span>
+        ${s.total>0?`<div class="kanban-card-checklist"><span class="ms material-symbols-outlined" style="font-size:14px">checklist</span>${s.done}/${s.total}</div>`:''}
+        ${vencido?`<span style="color:var(--danger);font-size:.72rem;font-weight:700">⚠️ Atrasada</span>`:''}
+        ${t.vencimento&&!vencido?`<span style="font-size:.7rem;color:var(--muted)">${new Date(t.vencimento).toLocaleDateString('pt-BR')}</span>`:''}
+      </div>
+    </div>`;
+  }
+  const ka=document.getElementById('kanban-afazer');
+  const km=document.getElementById('kanban-andamento');
+  const kc=document.getElementById('kanban-concluido');
+  if(ka)ka.innerHTML=cols.Pendente.length?cols.Pendente.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
+  if(km)km.innerHTML=cols.andamento.length?cols.andamento.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
+  if(kc)kc.innerHTML=cols.Concluida.length?cols.Concluida.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
+  const cnt=document.getElementById;
+  document.getElementById('kanban-count-afazer').textContent=cols.Pendente.length;
+  document.getElementById('kanban-count-andamento').textContent=cols.andamento.length;
+  document.getElementById('kanban-count-concluido').textContent=cols.Concluida.length;
+}
+
+// ==================== ATENDIMENTO (AGENDAMENTO) ====================
+let _atendAgId = null;  // current agendamento id being attended
+let _atendChecklist = []; // checklist items for this session
+
+function abrirAtendimento(agId){
+  _atendAgId = agId;
+  const ags = DB.get('agendamentos') || [];
+  const clientes = DB.get('clientes') || [];
+  const ag = ags.find(a => a.id === agId);
+  if(!ag) return;
+  const c = clientes.find(cl => cl.id === ag.cliente_ref);
+  const nomeCliente = ag.cliente_nome || (c ? c.nome : '—');
+
+  // Populate header
+  document.getElementById('atend-avatar').textContent = nomeCliente.charAt(0).toUpperCase();
+  document.getElementById('atend-nome').textContent = nomeCliente;
+  document.getElementById('atend-moto').textContent = c ? `${c.marca||''} ${c.modelo||''}`.trim() || '—' : '—';
+  document.getElementById('atend-placa').textContent = c ? (c.placa || '—') : '—';
+  document.getElementById('atend-tel').textContent = c ? (c.tel1 || c.wapp || '—') : '—';
+  const dt = parseDtAgenda(ag.data_hora_agendamento);
+  document.getElementById('atend-dt').textContent = dt ? dt.toLocaleString('pt-BR') : (ag.data_hora_agendamento || '—');
+
+  // Load checklist — from linked task if exists, else from ag.checklist, else default
+  const tarefaVinc = (DB.get('tarefas') || []).find(t => t.cliente_ref === ag.cliente_ref && t.status !== 'Concluida');
+  let clBase = [];
+  if(tarefaVinc && tarefaVinc.checklist){
+    try{ clBase = JSON.parse(tarefaVinc.checklist); }catch{}
+  } else if(ag.checklist){
+    try{ clBase = JSON.parse(ag.checklist); }catch{}
+  } else {
+    // Default checklist for a contact call
+    clBase = [
+      {id:'d1',text:'Verificar dados do cliente',done:false,doneAt:null},
+      {id:'d2',text:'Apresentar proposta / serviço',done:false,doneAt:null},
+      {id:'d3',text:'Confirmar próximo contato',done:false,doneAt:null},
+    ];
+  }
+  _atendChecklist = clBase.map(i => ({...i})); // deep copy
+
+  // Render all panels
+  renderAtendChecklist();
+  renderTentativasList(ag);
+  renderAtendHistorico(ag);
+  document.getElementById('atend-nota-txt').value = '';
+  document.getElementById('tent-obs').value = '';
+
+  // Reset to first tab
+  atendTab('checklist', document.querySelector('.atend-tab'));
+  openModal('modal-atendimento');
+}
+
+function atendTab(tab, btn){
+  document.querySelectorAll('.atend-tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.atend-tab').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('atab-' + tab);
+  if(panel) panel.classList.add('active');
+  if(btn) btn.classList.add('active');
+  // Refresh historico when opened
+  if(tab === 'historico'){
+    const ag = (DB.get('agendamentos') || []).find(a => a.id === _atendAgId);
+    if(ag) renderAtendHistorico(ag);
+  }
+}
+
+function atendToggleCheckitem(id){
+  const item = _atendChecklist.find(i => i.id === id);
+  if(!item) return;
+  item.done = !item.done;
+  item.doneAt = item.done ? new Date().toLocaleString('pt-BR') : null;
+  renderAtendChecklist();
+  // Auto-save to agendamento
+  saveAtendChecklist();
+}
+
+function atendAddCheckitem(){
+  const input = document.getElementById('atend-cl-new');
+  const text = (input.value || '').trim();
+  if(!text) return;
+  _atendChecklist.push({id:'ci-'+Date.now(),text,done:false,doneAt:null});
+  input.value = '';
+  renderAtendChecklist();
+  saveAtendChecklist();
+}
+
+function saveAtendChecklist(){
+  if(!_atendAgId) return;
+  const ags = DB.get('agendamentos') || [];
+  const clJson = JSON.stringify(_atendChecklist);
+  DB.set('agendamentos', ags.map(a => a.id === _atendAgId ? {...a, checklist: clJson} : a));
+  // Also update linked task if exists
+  const ag = ags.find(a => a.id === _atendAgId);
+  if(ag){
+    const tarefas = DB.get('tarefas') || [];
+    const tv = tarefas.find(t => t.cliente_ref === ag.cliente_ref && t.status !== 'Concluida');
+    if(tv){
+      const total = _atendChecklist.length;
+      const done = _atendChecklist.filter(i => i.done).length;
+      let newStatus = 'Pendente';
+      if(total > 0 && done === total) newStatus = 'Concluida';
+      else if(done > 0) newStatus = 'Em Andamento';
+      DB.set('tarefas', tarefas.map(t => t.id === tv.id ? {...t, checklist: clJson, status: newStatus} : t));
+    }
+  }
+}
+
+function renderAtendChecklist(){
+  const total = _atendChecklist.length;
+  const done = _atendChecklist.filter(i => i.done).length;
+  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+  // Progress bar
+  const fill = document.getElementById('atend-cl-fill');
+  const bar = document.getElementById('atend-cl-bar');
+  const prog = document.getElementById('atend-cl-progress');
+  if(fill) fill.style.width = pct + '%';
+  if(fill) fill.style.background = pct===100?'var(--success)':pct>0?'var(--orange)':'var(--border)';
+  if(bar) bar.style.display = total > 0 ? 'block' : 'none';
+  if(prog) prog.textContent = `${done}/${total} concluídos`;
+  const list = document.getElementById('atend-cl-list');
+  if(!list) return;
+  if(!_atendChecklist.length){
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.82rem">Nenhum item. Adicione abaixo ou crie uma tarefa com checklist.</div>';
+    return;
+  }
+  list.innerHTML = _atendChecklist.map(item => `
+    <div class="atend-checklist-item ${item.done?'done':''}" onclick="atendToggleCheckitem('${item.id}')">
+      <div class="ac-check ${item.done?'checked':''}">
+        <span class="ms material-symbols-outlined">check</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-text">${item.text}</div>
+        ${item.done && item.doneAt ? `<div class="ac-done-at">✅ ${item.doneAt}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function registrarTentativa(tipo){
+  if(!_atendAgId) return;
+  const ags = DB.get('agendamentos') || [];
+  const ag = ags.find(a => a.id === _atendAgId);
+  if(!ag) return;
+  const obs = (document.getElementById('tent-obs').value || '').trim();
+  const now = new Date();
+  const tent = {
+    tipo,
+    hora: now.toLocaleString('pt-BR'),
+    obs,
+    usuario: state.currentUser?.login || '—'
+  };
+  const tentativas = [...(ag.tentativas || []), tent];
+  DB.set('agendamentos', ags.map(a => a.id === _atendAgId ? {...a, tentativas} : a));
+  document.getElementById('tent-obs').value = '';
+  // Refresh list
+  const agUpdated = (DB.get('agendamentos') || []).find(a => a.id === _atendAgId);
+  if(agUpdated) renderTentativasList(agUpdated);
+  // Add to history
+  addAtendHistItem({type:'tentativa', tipo, obs, hora: tent.hora});
+  // Toast
+  const labels = {nao_atendeu:'Não atendeu',caixa_postal:'Caixa postal',numero_errado:'Número errado',atendeu:'Atendeu!'};
+  const toastType = tipo === 'atendeu' ? 'success' : tipo === 'numero_errado' ? 'danger' : 'warning';
+  showToast('Tentativa registrada', labels[tipo] || tipo, toastType);
+  // Sync table
+  renderAgendamentos();
+}
+
+function renderTentativasList(ag){
+  const list = document.getElementById('tent-list');
+  if(!list) return;
+  const tentativas = ag.tentativas || [];
+  if(!tentativas.length){
+    list.innerHTML = '<div style="text-align:center;padding:16px;color:var(--muted);font-size:.82rem">Nenhuma tentativa registrada ainda.</div>';
+    return;
+  }
+  const icons = {nao_atendeu:'phone_missed',caixa_postal:'voicemail',numero_errado:'phone_disabled',atendeu:'phone_in_talk'};
+  const labels = {nao_atendeu:'Não Atendeu',caixa_postal:'Caixa Postal',numero_errado:'Número Errado',atendeu:'Atendeu'};
+  list.innerHTML = [...tentativas].reverse().map(t => `
+    <div class="tentativa-item tent-${t.tipo}">
+      <div class="tentativa-icon">
+        <span class="ms material-symbols-outlined">${icons[t.tipo]||'phone'}</span>
+      </div>
+      <div class="tentativa-info">
+        <div class="tentativa-tipo">${labels[t.tipo]||t.tipo}</div>
+        <div class="tentativa-time">${t.hora} — ${t.usuario}</div>
+        ${t.obs ? `<div class="tentativa-obs">"${t.obs}"</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+async function salvarNotaAtendimento(){
+  if(!_atendAgId) return;
+  const txt = (document.getElementById('atend-nota-txt').value || '').trim();
+  if(!txt){ showToast('Atenção','Escreva uma anotação antes de salvar.','warning'); return; }
+  const ags = DB.get('agendamentos') || [];
+  const ag = ags.find(a => a.id === _atendAgId);
+  if(!ag) return;
+  const now = new Date().toLocaleString('pt-BR');
+  // Save as contato registro
+  const cfg = getConfig();
+  const clientes = DB.get('clientes') || [];
+  const cliente = clientes.find(c => c.id === ag.cliente_ref);
+  const row = await brPost(cfg.tableContatos, {
+    nome_contato: ag.cliente_nome || (cliente ? cliente.nome : '—'),
+    cliente_ref: ag.cliente_ref || '',
+    observacoes_contato: `[Atendimento Agendamento] ${txt}`,
+    data_hora_contato: now,
+    usuario_login: state.currentUser.login
+  });
+  if(row){
+    const contatos = DB.get('contatos') || [];
+    contatos.push({id:String(row.id),rowId:row.id,cliente_ref:ag.cliente_ref||'',nome:ag.cliente_nome||'—',obs:`[Atendimento Agendamento] ${txt}`,data_hora:now,usuario_login:state.currentUser.login});
+    DB.set('contatos', contatos);
+  }
+  // Add to history
+  addAtendHistItem({type:'nota', texto:txt, hora:now});
+  document.getElementById('atend-nota-txt').value = '';
+  showToast('Anotação salva!','Registrado no histórico de contatos','success');
+  atendTab('historico', document.querySelectorAll('.atend-tab')[3]);
+}
+
+function addAtendHistItem(item){
+  if(!_atendAgId) return;
+  const ags = DB.get('agendamentos') || [];
+  const ag = ags.find(a => a.id === _atendAgId);
+  if(!ag) return;
+  const hist = [...(ag.historico || []), {...item, ts: Date.now()}];
+  DB.set('agendamentos', ags.map(a => a.id === _atendAgId ? {...a, historico:hist} : a));
+  renderAtendHistorico((DB.get('agendamentos')||[]).find(a=>a.id===_atendAgId));
+}
+
+function renderAtendHistorico(ag){
+  const list = document.getElementById('atend-historico-list');
+  if(!list || !ag) return;
+  const hist = [...(ag.historico || [])].reverse();
+  const tentativas = [...(ag.tentativas || [])].map(t => ({type:'tentativa',...t,ts:0}));
+  if(!hist.length && !tentativas.length){
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:.82rem">Nenhuma interação registrada ainda.</div>';
+    return;
+  }
+  const icons = {nao_atendeu:'📵',caixa_postal:'📭',numero_errado:'🚫',atendeu:'✅'};
+  const labels = {nao_atendeu:'Não Atendeu',caixa_postal:'Caixa Postal',numero_errado:'Número Errado',atendeu:'Atendeu'};
+  list.innerHTML = hist.map(h => {
+    if(h.type === 'nota') return `
+      <div class="atend-hist-item type-nota">
+        <div class="atend-hist-hd">
+          <div class="atend-hist-tipo" style="color:var(--primary)">📝 Anotação</div>
+          <div class="atend-hist-time">${h.hora||'—'}</div>
+        </div>
+        <div class="atend-hist-text">${h.texto}</div>
+      </div>`;
+    if(h.type === 'tentativa') return `
+      <div class="atend-hist-item type-tentativa">
+        <div class="atend-hist-hd">
+          <div class="atend-hist-tipo" style="color:var(--orange)">${icons[h.tipo]||'📞'} ${labels[h.tipo]||h.tipo}</div>
+          <div class="atend-hist-time">${h.hora||'—'}</div>
+        </div>
+        ${h.obs ? `<div class="atend-hist-text">"${h.obs}"</div>` : ''}
+      </div>`;
+    if(h.type === 'concluido') return `
+      <div class="atend-hist-item type-concluido">
+        <div class="atend-hist-hd">
+          <div class="atend-hist-tipo" style="color:var(--success)">✅ Atendimento Concluído</div>
+          <div class="atend-hist-time">${h.hora||'—'}</div>
+        </div>
+      </div>`;
+    return '';
+  }).join('');
+}
+
+async function finalizarAtendimento(){
+  if(!_atendAgId) return;
+  const done = _atendChecklist.filter(i => i.done).length;
+  const total = _atendChecklist.length;
+  if(total > 0 && done < total){
+    if(!confirm(`${total-done} item(s) do checklist ainda não foram concluídos. Finalizar mesmo assim?`)) return;
+  }
+  saveAtendChecklist();
+  addAtendHistItem({type:'concluido', hora: new Date().toLocaleString('pt-BR')});
+  await concluirAgendamento(_atendAgId);
+  closeModal('modal-atendimento');
+  showToast('Atendimento finalizado!', 'Agendamento marcado como concluído.', 'success');
 }
 
 // ==================== CONTATOS ====================
@@ -1588,5 +2354,110 @@ function showToast(title,msg,type){
 // ==================== BOOT ====================
 initData();
 </script>
+
+<!-- Modal: Atendimento (Agendamento) -->
+<div class="modal-overlay" id="modal-atendimento">
+  <div class="modal lg">
+    <!-- Header dinâmico -->
+    <div class="atend-header" id="atend-hd">
+      <div class="atend-avatar" id="atend-avatar">?</div>
+      <div class="atend-info">
+        <h3 id="atend-nome">Cliente</h3>
+        <div class="atend-meta">
+          <span><span class="ms material-symbols-outlined" style="font-size:14px">two_wheeler</span><span id="atend-moto">—</span></span>
+          <span><span class="ms material-symbols-outlined" style="font-size:14px">pin</span><span id="atend-placa">—</span></span>
+          <span><span class="ms material-symbols-outlined" style="font-size:14px">calendar_month</span><span id="atend-dt">—</span></span>
+          <span><span class="ms material-symbols-outlined" style="font-size:14px">phone</span><span id="atend-tel">—</span></span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-atendimento')" style="margin-left:auto"><span class="ms material-symbols-outlined">close</span></button>
+    </div>
+    <!-- Tabs -->
+    <div class="atend-tabs">
+      <button class="atend-tab active" onclick="atendTab('checklist',this)"><span class="ms material-symbols-outlined">checklist</span>Checklist</button>
+      <button class="atend-tab" onclick="atendTab('tentativas',this)"><span class="ms material-symbols-outlined">phone_missed</span>Tentativas</button>
+      <button class="atend-tab" onclick="atendTab('nota',this)"><span class="ms material-symbols-outlined">edit_note</span>Anotação</button>
+      <button class="atend-tab" onclick="atendTab('historico',this)"><span class="ms material-symbols-outlined">history</span>Histórico</button>
+    </div>
+
+    <!-- TAB: CHECKLIST -->
+    <div class="atend-tab-panel active" id="atab-checklist">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:.82rem;font-weight:700;color:var(--text)">Itens a realizar neste atendimento:</div>
+        <div style="font-size:.76rem;color:var(--muted)" id="atend-cl-progress">0/0</div>
+      </div>
+      <div class="checklist-progress-bar" id="atend-cl-bar"><div class="checklist-progress-fill" id="atend-cl-fill" style="width:0%"></div></div>
+      <div id="atend-cl-list" style="margin-top:8px"></div>
+      <!-- Adicionar item rápido -->
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <input id="atend-cl-new" placeholder="Adicionar item ao checklist..." style="flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:'Sora',sans-serif;font-size:.84rem;outline:none;background:var(--bg)" onkeydown="if(event.key==='Enter'){event.preventDefault();atendAddCheckitem()}"/>
+        <button class="btn btn-primary btn-sm" onclick="atendAddCheckitem()"><span class="ms material-symbols-outlined">add</span></button>
+      </div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-atendimento')">Fechar</button>
+        <button class="btn btn-success btn-sm" onclick="finalizarAtendimento()"><span class="ms material-symbols-outlined">check_circle</span>Concluir Atendimento</button>
+      </div>
+    </div>
+
+    <!-- TAB: TENTATIVAS -->
+    <div class="atend-tab-panel" id="atab-tentativas">
+      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:14px">Registrar tentativa de contato:</div>
+      <div class="tent-btns">
+        <button class="tent-btn tb-nao" onclick="registrarTentativa('nao_atendeu')">
+          <span class="ms material-symbols-outlined">phone_missed</span>Não Atendeu
+        </button>
+        <button class="tent-btn tb-postal" onclick="registrarTentativa('caixa_postal')">
+          <span class="ms material-symbols-outlined">voicemail</span>Caixa Postal
+        </button>
+        <button class="tent-btn tb-errado" onclick="registrarTentativa('numero_errado')">
+          <span class="ms material-symbols-outlined">phone_disabled</span>Número Errado
+        </button>
+        <button class="tent-btn tb-atendeu" onclick="registrarTentativa('atendeu')">
+          <span class="ms material-symbols-outlined">phone_in_talk</span>Atendeu
+        </button>
+      </div>
+      <div style="margin-top:16px">
+        <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Observação (opcional)</div>
+        <textarea id="tent-obs" rows="3" placeholder="Detalhes da tentativa..." style="width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:'Sora',sans-serif;font-size:.84rem;outline:none;resize:vertical;background:var(--bg);transition:.18s"></textarea>
+      </div>
+      <div style="margin-top:8px;font-size:.76rem;color:var(--muted)">As tentativas são salvas automaticamente ao clicar no tipo acima.</div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-size:.82rem;font-weight:700;margin-bottom:10px">Tentativas registradas:</div>
+        <div id="tent-list" class="tentativa-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB: ANOTAÇÃO -->
+    <div class="atend-tab-panel" id="atab-nota">
+      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:12px">Anotação rápida sobre este atendimento:</div>
+      <div class="quick-note-area">
+        <textarea id="atend-nota-txt" placeholder="Descreva o que foi tratado, combinado, observações importantes...&#10;&#10;Ex: Cliente pediu prazo para pagamento. Ligar novamente na sexta."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;gap:10px">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-atendimento')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" onclick="salvarNotaAtendimento()"><span class="ms material-symbols-outlined">save</span>Salvar Anotação</button>
+      </div>
+    </div>
+
+    <!-- TAB: HISTÓRICO -->
+    <div class="atend-tab-panel" id="atab-historico">
+      <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:14px">Histórico de interações com este agendamento:</div>
+      <div id="atend-historico-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERDUE BANNER -->
+<div id="overdue-banner">
+  <div class="overdue-banner-inner">
+    <span class="ms material-symbols-outlined">alarm_off</span>
+    <div class="overdue-banner-items" id="overdue-banner-items"></div>
+    <button onclick="document.getElementById('overdue-banner').style.display='none'" style="background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 12px;color:#fff;font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0">Dispensar</button>
+  </div>
+</div>
+
+<!-- ALERT POPUP -->
+<div id="alert-popup-container"></div>
+
 </body>
 </html>

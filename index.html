@@ -324,7 +324,7 @@ tbody tr:last-child td{border-bottom:none}
 .kanban-col-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
 .kanban-col-title{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:8px}
 .kanban-col-count{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px}
-.kanban-card{background:var(--surface);border-radius:var(--r);padding:14px;margin-bottom:10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:all .2s}
+.kanban-card{background:var(--surface);border-radius:var(--r);padding:14px;margin-bottom:10px;border:1px solid var(--border);box-shadow:var(--sh);cursor:grab;transition:all .2s;user-select:none}
 .kanban-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
 .kanban-card-title{font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:6px}
 .kanban-card-sub{font-size:.74rem;color:var(--muted);margin-bottom:8px}
@@ -566,6 +566,15 @@ tbody tr:last-child td{border-bottom:none}
 .ia-active-badge{position:absolute;top:12px;right:14px;background:linear-gradient(135deg,var(--primary),var(--orange));color:#fff;font-size:.65rem;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px}
 .ia-model-select{width:100%;margin-top:10px;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:'Sora',sans-serif;font-size:.82rem;color:var(--text);outline:none;background:var(--bg);cursor:pointer;transition:.18s}
 .ia-model-select:focus{border-color:var(--primary);background:#fff}
+
+
+/* ── KANBAN DRAG AND DROP ── */
+.kanban-card:active{cursor:grabbing}
+.kanban-card.dragging{opacity:.4;transform:rotate(1.5deg) scale(.97);box-shadow:none}
+.kanban-card *{pointer-events:none}
+.kanban-col.drag-over{background:var(--primary-s)!important;border-color:var(--primary)!important;border:2px dashed var(--primary)!important}
+.kanban-col.drag-over .kanban-col-hd{border-bottom-color:var(--primary)}
+.kanban-drop-zone{min-height:60px;border-radius:var(--r);transition:all .2s}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
@@ -829,21 +838,21 @@ tbody tr:last-child td{border-bottom:none}
   <!-- Vista Kanban -->
   <div id="tarefas-view-kanban" style="display:none">
     <div class="kanban-board">
-      <div class="kanban-col afazer">
+      <div class="kanban-col afazer" data-status="Pendente">
         <div class="kanban-col-hd">
           <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">radio_button_unchecked</span>A Fazer</div>
           <span class="kanban-col-count" id="kanban-count-afazer">0</span>
         </div>
         <div id="kanban-afazer"></div>
       </div>
-      <div class="kanban-col andamento">
+      <div class="kanban-col andamento" data-status="Em Andamento">
         <div class="kanban-col-hd">
           <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">pending</span>Em Andamento</div>
           <span class="kanban-col-count" id="kanban-count-andamento">0</span>
         </div>
         <div id="kanban-andamento"></div>
       </div>
-      <div class="kanban-col concluido">
+      <div class="kanban-col concluido" data-status="Concluida">
         <div class="kanban-col-hd">
           <div class="kanban-col-title"><span class="ms material-symbols-outlined" style="font-size:18px">check_circle</span>Concluído</div>
           <span class="kanban-col-count" id="kanban-count-concluido">0</span>
@@ -2128,41 +2137,109 @@ function renderTarefas(){
   }).join('');
 }
 
+// ── Kanban drag & drop ──
+let _kanbanDragId = null;
+
 function renderKanban(list){
-  const cols={Pendente:[],andamento:[],Concluida:[]};
-  list.forEach(t=>{
-    if(t.status==='Concluida')cols.Concluida.push(t);
-    else if(t.status==='Em Andamento')cols.andamento.push(t);
-    else cols.Pendente.push(t);
+  const B = {'Pendente':[],'Em Andamento':[],'Concluida':[]};
+  list.forEach(t => {
+    const k = t.status==='Concluida'?'Concluida':t.status==='Em Andamento'?'Em Andamento':'Pendente';
+    B[k].push(t);
   });
-  const priBadge={'Baixa':'badge-normal','Media':'badge-medio','Alta':'badge-critico'};
-  function renderCard(t){
+  const pb = {'Baixa':'badge-normal','Media':'badge-medio','Alta':'badge-critico'};
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function card(t){
     const s=getChecklistStats(t.checklist);
-    const vencido=t.vencimento&&new Date(t.vencimento)<new Date()&&t.status!=='Concluida';
-    const pctColor=s.pct===100?'var(--success)':s.pct>0?'var(--orange)':'var(--border)';
-    return `<div class="kanban-card" onclick="openModalTarefa('${t.id}')">
-      <div class="kanban-card-title">${t.titulo}</div>
-      ${t.descricao?`<div class="kanban-card-sub">${t.descricao.slice(0,80)}${t.descricao.length>80?'…':''}</div>`:''}
-      ${s.total>0?`<div class="kanban-progress"><div class="kanban-progress-fill" style="width:${s.pct}%;background:${pctColor}"></div></div>`:''}
-      <div class="kanban-card-footer">
-        <span class="badge ${priBadge[t.prioridade]||'badge-normal'}" style="font-size:.65rem">${t.prioridade}</span>
-        ${s.total>0?`<div class="kanban-card-checklist"><span class="ms material-symbols-outlined" style="font-size:14px">checklist</span>${s.done}/${s.total}</div>`:''}
-        ${vencido?`<span style="color:var(--danger);font-size:.72rem;font-weight:700">⚠️ Atrasada</span>`:''}
-        ${t.vencimento&&!vencido?`<span style="font-size:.7rem;color:var(--muted)">${new Date(t.vencimento).toLocaleDateString('pt-BR')}</span>`:''}
-      </div>
-    </div>`;
+    const venc=t.vencimento&&new Date(t.vencimento)<new Date()&&t.status!=='Concluida';
+    const pc=s.pct===100?'var(--success)':s.pct>0?'var(--orange)':'var(--border)';
+    return '<div class="kanban-card" draggable="true" data-tid="'+t.id+'">'
+      +'<div class="kanban-card-title">'+esc(t.titulo)+'</div>'
+      +(t.descricao?'<div class="kanban-card-sub">'+esc(t.descricao.slice(0,80))+(t.descricao.length>80?'…':'')+'</div>':'')
+      +(s.total>0?'<div class="kanban-progress"><div class="kanban-progress-fill" style="width:'+s.pct+'%;background:'+pc+'"></div></div>':'')
+      +'<div class="kanban-card-footer">'
+      +'<span class="badge '+(pb[t.prioridade]||'badge-normal')+'" style="font-size:.65rem">'+esc(t.prioridade)+'</span>'
+      +(s.total>0?'<div class="kanban-card-checklist"><span class="ms material-symbols-outlined" style="font-size:14px">checklist</span>'+s.done+'/'+s.total+'</div>':'')
+      +(venc?'<span style="color:var(--danger);font-size:.72rem;font-weight:700">⚠️ Atrasada</span>':'')
+      +(t.vencimento&&!venc?'<span style="font-size:.7rem;color:var(--muted)">'+new Date(t.vencimento).toLocaleDateString('pt-BR')+'</span>':'')
+      +'</div></div>';
   }
-  const ka=document.getElementById('kanban-afazer');
-  const km=document.getElementById('kanban-andamento');
-  const kc=document.getElementById('kanban-concluido');
-  if(ka)ka.innerHTML=cols.Pendente.length?cols.Pendente.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
-  if(km)km.innerHTML=cols.andamento.length?cols.andamento.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
-  if(kc)kc.innerHTML=cols.Concluida.length?cols.Concluida.map(renderCard).join(''):`<div style="text-align:center;padding:24px;color:var(--muted);font-size:.8rem">Nenhuma tarefa</div>`;
-  const cnt=document.getElementById;
-  document.getElementById('kanban-count-afazer').textContent=cols.Pendente.length;
-  document.getElementById('kanban-count-andamento').textContent=cols.andamento.length;
-  document.getElementById('kanban-count-concluido').textContent=cols.Concluida.length;
+  const Z={'Pendente':'kanban-afazer','Em Andamento':'kanban-andamento','Concluida':'kanban-concluido'};
+  const C={'Pendente':'kanban-count-afazer','Em Andamento':'kanban-count-andamento','Concluida':'kanban-count-concluido'};
+  ['Pendente','Em Andamento','Concluida'].forEach(st=>{
+    const z=document.getElementById(Z[st]);
+    const cnt=document.getElementById(C[st]);
+    if(z) z.innerHTML = B[st].length ? B[st].map(card).join('') : '<div style="min-height:80px"></div>';
+    if(cnt) cnt.textContent = B[st].length;
+  });
+  initKanbanDnD();
 }
+
+function initKanbanDnD(){
+  // cards
+  document.querySelectorAll('.kanban-card[data-tid]').forEach(el=>{
+    // clone to remove old listeners
+    const neo = el.cloneNode(true);
+    el.parentNode.replaceChild(neo, el);
+  });
+  document.querySelectorAll('.kanban-card[data-tid]').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      _kanbanDragId = card.dataset.tid;
+      e.dataTransfer.setData('text/plain', _kanbanDragId);
+      e.dataTransfer.effectAllowed='move';
+      requestAnimationFrame(()=>card.classList.add('dragging'));
+    });
+    card.addEventListener('dragend',()=>{
+      card.classList.remove('dragging');
+      _kanbanDragId=null;
+      document.querySelectorAll('.kanban-col').forEach(c=>c.classList.remove('drag-over'));
+    });
+    card.addEventListener('click',()=>{
+      if(!_kanbanDragId) openModalTarefa(card.dataset.tid);
+    });
+  });
+
+  // columns — attach on outer .kanban-col which has data-status
+  document.querySelectorAll('.kanban-col[data-status]').forEach(col=>{
+    // clone to remove old listeners
+    const neo = col.cloneNode(false);
+    // move children
+    while(col.firstChild) neo.appendChild(col.firstChild);
+    col.parentNode.replaceChild(neo, col);
+  });
+  document.querySelectorAll('.kanban-col[data-status]').forEach(col=>{
+    const st = col.dataset.status;
+    col.addEventListener('dragover',e=>{
+      e.preventDefault();
+      e.dataTransfer.dropEffect='move';
+      document.querySelectorAll('.kanban-col').forEach(c=>c.classList.remove('drag-over'));
+      col.classList.add('drag-over');
+    });
+    col.addEventListener('dragleave',e=>{
+      if(!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+    });
+    col.addEventListener('drop',e=>{
+      e.preventDefault();
+      col.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain')||_kanbanDragId;
+      _kanbanDragId=null;
+      if(id && st) kanbanMover(id, st);
+    });
+  });
+}
+
+async function kanbanMover(id, novoStatus){
+  const tarefas=DB.get('tarefas')||[];
+  const t=tarefas.find(x=>x.id===id);
+  if(!t||t.status===novoStatus) return;
+  DB.set('tarefas',tarefas.map(x=>x.id===id?{...x,status:novoStatus}:x));
+  renderTarefas();
+  updateDashboard();
+  const cfg=getConfig();
+  if(t.rowId) await brPatch(cfg.tableTarefas,t.rowId,{status_tarefa:novoStatus});
+  const lbl={'Pendente':'A Fazer','Em Andamento':'Em Andamento','Concluida':'Concluído'};
+  showToast('Tarefa movida','"'+t.titulo+'" → '+lbl[novoStatus],'success');
+}
+
 
 // ==================== ATENDIMENTO (AGENDAMENTO) ====================
 let _atendAgId = null;  // current agendamento id being attended
